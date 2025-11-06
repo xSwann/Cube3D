@@ -22,7 +22,7 @@ Avant de commencer une nouvelle fonctionnalité :
 ```bash
 git checkout main             # se placer sur la branche principale
 git pull origin main          # récupérer la dernière version
-git checkout -b feature/parser
+git checkout -b swann/parser
 ```
 
 ### 💾 Sauvegarder et envoyer son travail  
