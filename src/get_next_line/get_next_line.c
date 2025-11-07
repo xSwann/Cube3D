@@ -6,7 +6,7 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:18:38 by slatrech          #+#    #+#             */
-/*   Updated: 2025/07/31 14:48:53 by flebrun          ###   ########.fr       */
+/*   Updated: 2025/11/07 13:24:36 by slatrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	*zmata(char *ligne, char *buffer, size_t bufferindex, size_t readreturn)
 	free(sub);
 	sub = ft_substr(buffer, bufferindex, i + 1);
 	ligne = ft_strjoin(ligne, sub);
+	free(sub);
 	return (ligne);
 }
 

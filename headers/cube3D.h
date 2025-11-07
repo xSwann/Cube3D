@@ -34,5 +34,7 @@ typedef struct s_scene
 
 t_scene parse_file(char *file_name);
 
+void free_scene(t_scene *scene);
+
 
 #endif
