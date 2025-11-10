@@ -27,8 +27,6 @@ char *remove_endl(char *str)
 	int i;
 	char *str_without_endl;
 
-	if (!str)
-		return (NULL);
 	i = 0;
 	while (str[i] && str[i] != '\n')
 	{
@@ -39,7 +37,7 @@ char *remove_endl(char *str)
 	return (str_without_endl);
 }
 
-//Les color lines ressortent sous le format "255,255,255" peut importe si l'user entre des espaces avant, apres ou entre les nombres et les virgules
+//Les color lines ont ressortent sous le format "255,255,255" peut importe si l'user entre des expaces avant, apres ou entre les nombres et les virgules
 char *sanitize_color_line(char *line)
 {
 	int i;
@@ -81,7 +79,7 @@ char *sanitize_texture_line(char *line)
 
 	i = 0;
 	start = 0;
-	end = ft_strlen(line) -1;
+	end = ft_strlen(line) - 1;
 	str = NULL;
 	while(line[i] && ft_isspace(line[i]))
 		i++;
@@ -92,15 +90,15 @@ char *sanitize_texture_line(char *line)
 		start = i;
 		while (line[i] && i < end)
 			i++;
-		sub = ft_substr(line, start, end + 1 - start);
+		sub = ft_substr(line, start, end - start);
 		str = ft_strjoin(str, sub);
 		free(sub);
 	}
 	return (str);
 }
 
-//Retourne une ligne sanitize, si elle respecte le format imposee
-char *import_color_line( t_scene *scene, char *line, char *line_to_free)
+//Retourne une ligne sanitize, si elle respecte le formattage imposee
+char *import_color_line( t_scene *scene, char *line)
 {
 	int i;
 	int first_number;
@@ -128,20 +126,12 @@ char *import_color_line( t_scene *scene, char *line, char *line_to_free)
 		last_number = i;
 		while(line[i] && ft_isspace(line[i]))
 			i++;
-		full_number = ft_substr(line, first_number, last_number - first_number);
-		if (!full_number)
-		{
-			free_scene(scene);
-			free(line);
-			free(line_to_free);
-			error_handler("Memory allocation failed");
-		}
+		full_number = ft_substr(line, first_number, last_number);
 		if(count == 0 || (line[i] != ',' && coma_count != 2) || (count > 3) || (ft_atoi(full_number) > 255))
 		{
 			free_scene(scene);
 			free(full_number);
 			free(line);
-			free(line_to_free);
 			error_handler("Floor and Ceilling color must be R,G,B inside 0 and 255 separated by ','");
 		}
 		free(full_number);
@@ -152,30 +142,12 @@ char *import_color_line( t_scene *scene, char *line, char *line_to_free)
 	return (sanitize_color_line(line));
 }
 
-int have_good_extension(char *texture)
-{
-	int	len;
-
-	len = ft_strlen(texture);
-	if (len <= 4 || texture[len -4] != '.' || texture[len -3] != 'x'
-		|| texture[len -2] != 'p' || texture[len -1] != 'm'
-		|| texture[len] != '\0')
-		return (0);
-	return (1);
-}
-
 
 //Importe les differentes lignes de configuration dans la structure en verifiant que leur denominateurs soient bien formatee
-//Les lignes peuvent etre ecrites avec ou sans un ou plusieurs espaces
-//Ex: "NO ./no_texture.xp" et "NO./no_texture.xp" sont des lignes de textures valides
-//"NORTH ./no_texture.xp" est aussi une ligne valide, le fichier "RTH ./no_texture.xp" va essayer d'etre ouvert
-//NO ./north.xpm F 220,100,0.xpm est une ligne valide car un fichier peut s'appeller "./north.xpm F 220,100,0.xpm"
-//Les doublons sont accepte, la derniere valeur sera prise en compte
 void	import_configuration_line(char *line, t_scene *scene)
 {
 	int i;
 	char *line_value;
-	char *texture;
 
 	i = 0;
 	while(line[i] && (ft_isspace(line[i])))
@@ -184,124 +156,56 @@ void	import_configuration_line(char *line, t_scene *scene)
 	{
 		if(line[i] == 'F')
 		{
+			//i++;
 			while(ft_isspace(line[i]))
 				i++;
 			line_value = ft_substr(line, i + 1, ft_strlen(line) - (i));
-			if (!line_value)  // Si substr échoue
-			{
-				free(line);
-				free_scene(scene);
-				error_handler("Memory allocation failed");
-			}
-			if(scene->floor_color)
-				free(scene->floor_color);
-			scene->floor_color = import_color_line(scene, line_value, line);
+			//free(line);
+			scene->floor_color = import_color_line(scene, line_value);
 			free(line_value);
 		}
 		else if(line[i] == 'C')
 		{
+			//i++;
 			while(ft_isspace(line[i]))
 				i++;
 			line_value = ft_substr(line, i + 1, ft_strlen(line) - (i));
-			if(scene->ceiling_color)
-				free(scene->ceiling_color);
-			scene->ceiling_color = import_color_line(scene, line_value, line);
+			//free(line);
+			scene->ceiling_color = import_color_line(scene, line_value);
 			free(line_value);
 		}
 		else if(line[i] == 'N')
 		{
 			i++;
 			if (line[i] != 'O')
-			{
-				free(line);
 				error_handler("A: Textures path must be NO SO WE EA following by the path");
-			}
-			if(scene->no_texture)
-				free(scene->no_texture);
-			texture = sanitize_texture_line(line + i + 1);
-			if (!texture)  // Si sanitize échoue (car il peut retourner NULL maintenant)
-			{
-				free(line);
-				free_scene(scene);
-				error_handler("Memory allocation failed");
-			}
-			if (have_good_extension(texture))
-				scene->no_texture = texture;
-			else
-			{
-				free(texture);
-				free(line);
-				free_scene(scene);
-				error_handler("Textures should be .xpm files");
-			}
+			scene->no_texture = sanitize_texture_line(line + i + 1);
 		}
 		else if(line[i] == 'S')
 		{
 			i++;
 			if (line[i] != 'O')
-			{
-				free(line);
 				error_handler("B: Textures path must be NO SO WE EA following by the path");
-			}
-			if(scene->so_texture)
-				free(scene->so_texture);
-						texture = sanitize_texture_line(line + i + 1);
-			if (have_good_extension(texture))
-				scene->so_texture = texture;
-			else
-			{
-				free(texture);
-				free(line);
-				free_scene(scene);
-				error_handler("Textures should be .xpm files");
-			}
+			scene->so_texture = sanitize_texture_line(line + i + 1);
 		}
 		else if(line[i] == 'W')
 		{
 			i++;
 			if (line[i] != 'E')
-			{
-				free(line);
 				error_handler("C: Textures path must be NO SO WE EA following by the path");
-			}
-			if(scene->we_texture)
-				free(scene->we_texture);
-						texture = sanitize_texture_line(line + i + 1);
-			if (have_good_extension(texture))
-				scene->we_texture = texture;
-			else
-			{
-				free(texture);
-				free(line);
-				free_scene(scene);
-				error_handler("Textures should be .xpm files");
-			}
+			scene->we_texture = sanitize_texture_line(line + i + 1);
 		}
 		else if(line[i] == 'E')
 		{
 			i++;
 			if (line[i] != 'A')
-			{
-				free(line);
 				error_handler("D: Textures path must be NO SO WE EA following by the path");
-			}
-			if(scene->ea_texture)
-				free(scene->ea_texture);
-						texture = sanitize_texture_line(line + i + 1);
-			if (have_good_extension(texture))
-				scene->ea_texture = texture;
-			else
-			{
-				free(texture);
-				free(line);
-				free_scene(scene);
-				error_handler("Textures should be .xpm files");
-			}
+			while(ft_isspace(line[i]))
+				i++;
+			scene->ea_texture = sanitize_texture_line(line + 2);
 		}
 		return ;
 	}
-	free(line);
-	free_scene(scene);
 	error_handler("Need configurations lines before the map\n");
 }
 
@@ -317,12 +221,9 @@ void	read_scene_lines(int fd, t_scene *scene)
 	|| is_empty(scene->ea_texture)))
 	{
 		scene_line = remove_endl(get_next_line(fd));
-		if (!scene_line)
-			return ;
 		if (scene_line && scene_line[0] != '\n')
 		{
 			import_configuration_line(scene_line, scene);
-			//free(scene_line);
 			//printf("line: %s", scene_line);
 		}
 		free(scene_line);
@@ -340,12 +241,18 @@ void init_scene(t_scene *scene)
 
 void free_scene(t_scene *scene)
 {
-	free(scene->ceiling_color);
-	free(scene->floor_color);
-	free(scene->ea_texture);
-	free(scene->so_texture);
-	free(scene->no_texture);
-	free(scene->we_texture);
+	if(scene->ceiling_color)
+		free(scene->ceiling_color);
+	if(scene->floor_color)
+		free(scene->floor_color);
+	if(scene->ea_texture)
+		free(scene->ea_texture);
+	if(scene->so_texture)
+		free(scene->so_texture);
+	if(scene->no_texture)
+		free(scene->no_texture);
+	if(scene->we_texture)
+		free(scene->we_texture);
 }
 
 t_scene	read_scene(char *scene_name)

@@ -2,7 +2,10 @@
 
 int main(int argc, char **argv)
 {
+    t_scene scene;
+
     (void)argc;
-    parse_file(argv[1]);
+    scene = parse_file(argv[1]);
+    free_scene(&scene);
     return (0);
 }

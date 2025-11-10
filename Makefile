@@ -7,7 +7,7 @@ NAME        := cub3D
 
 # ---- Compiler & Flags ----
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -O2
+CFLAGS      := -Wall -Wextra -Werror -O2 -g3
 CPPFLAGS    := -MMD -MP -I headers -I src/get_next_line -I minilibx-linux
 
 # ---- MiniLibX (Linux) ----
@@ -22,6 +22,7 @@ LIBFT_DIR    := src/libft/
 
 LIBFT_SRCS   := \
 	$(LIBFT_DIR)ft_atoi.c \
+	$(LIBFT_DIR)ft_isspace.c \
 	$(LIBFT_DIR)ft_itoa.c \
 	$(LIBFT_DIR)ft_split.c \
 	$(LIBFT_DIR)ft_calloc.c \
