@@ -1,23 +1,19 @@
-# =========================
-#         cube3D
-# =========================
+NAME := cub3D
 
-# ---- Binary ----
-NAME        := cub3D
+# Compiler & Flags
+CC := cc
+CFLAGS := -Wall -Wextra -Werror -O2 -g3
+CPPFLAGS := -I headers -I src/get_next_line -I minilibx-linux
 
-# ---- Compiler & Flags ----
-CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -O2 -g3
-CPPFLAGS    := -MMD -MP -I headers -I src/get_next_line -I minilibx-linux
+# MiniLibX
+MLX_DIR := minilibx-linux
+MLX_LIB := $(MLX_DIR)/libmlx.a
+LIBS := -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
-# ---- MiniLibX (Linux) ----
-MLX_DIR     := minilibx-linux
-MLX_LIB     := $(MLX_DIR)/libmlx.a
-LIBS        := -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
+# Dossiers
+OBJ_DIR := obj
+SRC_DIR := src
 
-# ---- Sources ----
-
-# ---- Libft ----
 LIBFT_DIR    := src/libft/
 
 LIBFT_SRCS   := \
@@ -42,61 +38,58 @@ LIBFT_SRCS   := \
 	$(LIBFT_DIR)ft_isdigit.c \
 	$(LIBFT_DIR)ft_strslen.c
 
-SRCS        := \
-	src/main.c \
-	src/get_next_line/get_next_line.c \
-	src/parsing/scene_parsing.c \
-	src/parsing/map_parsing.c \
+# Tous les fichiers sources
+SRCS := \
+	$(SRC_DIR)/main.c \
+	$(SRC_DIR)/get_next_line/get_next_line.c \
+	$(SRC_DIR)/parsing/scene_parsing.c \
+	$(SRC_DIR)/parsing/map_parsing.c \
 	$(LIBFT_SRCS)
+	$(SRC_DIR)/init/init.c \
+	$(SRC_DIR)/init/mlx_init.c \
+	$(SRC_DIR)/render/render.c \
+	$(SRC_DIR)/render/get_color.c \
+	$(SRC_DIR)/events/move.c \
+	$(SRC_DIR)/utils/error.c \
+	$(SRC_DIR)/utils/free.c \
+	$(SRC_DIR)/utils/utils.c \
 
+# Objets
+OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+DEPS := $(OBJS:.o=.d)
 
-# ---- Objects / Deps ----
-OBJ_DIR     := obj
-OBJS        := $(SRCS:src/%.c=$(OBJ_DIR)/%.o)
-DEPS        := $(OBJS:.o=.d)
+# Couleurs
+GREEN := \033[1;32m
+BLUE := \033[1;34m
+YELLOW := \033[1;33m
+RESET := \033[0m
 
-# ---- Colors ----
-GREEN       := \033[1;32m
-BLUE        := \033[1;34m
-YELLOW      := \033[1;33m
-RESET       := \033[0m
+# Règles
+all: $(MLX_LIB) $(NAME)
 
-# =========================
-#         Rules
-# =========================
-
-all: $(NAME)
-
-$(NAME): $(MLX_LIB) $(OBJS)
+$(NAME): $(OBJS)
 	@echo "$(BLUE)Linking:$(RESET) $@"
-	@$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS)
-	@echo "$(GREEN)Build complete.$(RESET)"
+	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS)
+	@echo "$(GREEN)Build complete! $(RESET)"
 
 $(MLX_LIB):
 	@echo "$(YELLOW)Building MiniLibX...$(RESET)"
-	@$(MAKE) -C $(MLX_DIR) > /dev/null
-	@echo "$(GREEN)MiniLibX ready.$(RESET)"
+	@$(MAKE) -C $(MLX_DIR) > /dev/null 2>&1
+	@echo "$(GREEN)MiniLibX OK$(RESET)"
 
-$(OBJ_DIR)/%.o: src/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@echo "$(BLUE)Compiling:$(RESET) $<"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-run: $(NAME)
-	@echo "$(YELLOW)Running cube3D...$(RESET)"
+run: all
+	@echo "$(YELLOW)Launching cub3D...$(RESET)"
 	@./$(NAME) maps/map1.cub
-
-debug: CFLAGS := -Wall -Wextra -Werror -g3 -O0
-debug: re
-
-asan: CFLAGS := -Wall -Wextra -Werror -g3 -O0 -fsanitize=address
-asan: LIBS += -fsanitize=address
-asan: re
 
 clean:
 	@echo "$(YELLOW)Cleaning objects...$(RESET)"
 	@rm -rf $(OBJ_DIR)
-	@$(MAKE) -C $(MLX_DIR) clean > /dev/null
+	@$(MAKE) -C $(MLX_DIR) clean > /dev/null 2>&1
 
 fclean: clean
 	@echo "$(YELLOW)Removing binary...$(RESET)"
@@ -104,6 +97,5 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all run debug asan clean fclean re
-
+.PHONY: all run clean fclean re
 -include $(DEPS)
