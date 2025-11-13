@@ -37,16 +37,26 @@ typedef struct s_player
 	double	plane_y;
 }				t_player;
 
+typedef struct s_list
+{
+	char 			*line;
+	struct s_list	*next;
+} t_list;
+
 typedef struct s_scene
 {
     t_list  *map_struct;
 	char    **map_tab;
-    char *no_texture;
-    char *so_texture;
-    char *we_texture;
-    char *ea_texture;
-    char *floor_color;
-    char *ceiling_color;
+    char 	*no_texture;
+    char 	*so_texture;
+    char 	*we_texture;
+    char 	*ea_texture;
+    char 	*floor_color;
+    char 	*ceiling_color;
+	int		spawn_x;
+	int		spawn_y;
+	int		map_height;
+	int		map_width;
 }	t_scene;
 
 
