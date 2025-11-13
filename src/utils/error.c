@@ -1,28 +1,27 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: elanteno <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/06 11:42:11 by elanteno          #+#    #+#             */
-/*   Updated: 2025/11/06 12:50:59 by elanteno         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../../headers/cube3D.h"
+#include "../../headers/libft.h"
 
-void	super_exit(t_data *data, int code)
+void	error_handler(char *error_message)
 {
-	if (!data)
+	ft_putstr_fd(RED "cub3D: Error: ", 2);
+	ft_putstr_fd(error_message, 2);
+	ft_putstr_fd("\n" RESET, 2);
+	exit(EXIT_FAILURE);
+}
+
+void	super_exit(t_app *app, int code)
+{
+	if (!app)
 		exit(code);
-	if (data->win && data->mlx)
-		mlx_destroy_window(data->mlx, data->win);
-	if (data->mlx)
+	if (app->win && app->mlx)
+		mlx_destroy_window(app->mlx, app->win);
+	if (app->mlx)
 	{
-		mlx_destroy_display(data->mlx);
-		mlx_loop_end(data->mlx);
-		free(data->mlx);
+		mlx_destroy_display(app->mlx);
+		mlx_loop_end(app->mlx);
+		free(app->mlx);
 	}
-	free_all_data(data);
+	free_all_data(app);
 	exit(code);
 }
 
@@ -43,8 +42,74 @@ int	err_msg_detail(char *detail, char *str, int code)
 	return (code);
 }
 
-int	quit_game(t_data *data)
+int	quit_game(t_app *app)
 {
-	super_exit(data, 0);
+	super_exit(app, 0);
 	return (0);
 }
+
+void	free_textures(t_app *app)
+{
+	int	i;
+
+	i = 0;
+	while (i < 4)
+	{
+		if (app->textures[i].img)
+			mlx_destroy_image(app->mlx, app->textures[i].img);
+		i++;
+	}
+}
+
+void	free_image(t_app *app)
+{
+	if (app->frame.img)
+		mlx_destroy_image(app->mlx, app->frame.img);
+}
+
+void	free_map(char **map)
+{
+	int	i;
+
+	if (!map)
+		return ;
+	i = 0;
+	while (map[i])
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
+}
+
+void	free_scene(t_scene *scene)
+{
+	if (scene->no_texture)
+		free(scene->no_texture);
+	if (scene->so_texture)
+		free(scene->so_texture);
+	if (scene->we_texture)
+		free(scene->we_texture);
+	if (scene->ea_texture)
+		free(scene->ea_texture);
+	if (scene->floor_color)
+		free(scene->floor_color);
+	if (scene->ceiling_color)
+		free(scene->ceiling_color);
+	free_map(scene->map_tab);
+}
+
+void	free_all_data(t_app *app)
+{
+	free_textures(app);
+	free_image(app);
+	free_scene(&app->scene);
+	if (app->win)
+		mlx_destroy_window(app->mlx, app->win);
+	if (app->mlx)
+	{
+		mlx_destroy_display(app->mlx);
+		free(app->mlx);
+	}
+}
+
