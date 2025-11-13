@@ -1,4 +1,3 @@
-
 NAME := cub3D
 
 # Compiler & Flags
@@ -15,11 +14,37 @@ LIBS := -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 OBJ_DIR := obj
 SRC_DIR := src
 
+LIBFT_DIR    := src/libft/
+
+LIBFT_SRCS   := \
+	$(LIBFT_DIR)ft_atoi.c \
+	$(LIBFT_DIR)ft_isspace.c \
+	$(LIBFT_DIR)ft_itoa.c \
+	$(LIBFT_DIR)ft_split.c \
+	$(LIBFT_DIR)ft_calloc.c \
+	$(LIBFT_DIR)ft_memcpy.c \
+	$(LIBFT_DIR)ft_memset.c \
+	$(LIBFT_DIR)ft_strchr.c \
+	$(LIBFT_DIR)ft_substr.c \
+	$(LIBFT_DIR)ft_strlen.c \
+	$(LIBFT_DIR)ft_strdup.c \
+	$(LIBFT_DIR)ft_strcmp.c \
+	$(LIBFT_DIR)ft_strncmp.c \
+	$(LIBFT_DIR)ft_strjoin.c \
+	$(LIBFT_DIR)ft_memmove.c \
+	$(LIBFT_DIR)str_is_num.c \
+	$(LIBFT_DIR)ft_isalpha.c \
+	$(LIBFT_DIR)ft_isalnum.c \
+	$(LIBFT_DIR)ft_isdigit.c \
+	$(LIBFT_DIR)ft_strslen.c
+
 # Tous les fichiers sources
 SRCS := \
 	$(SRC_DIR)/main.c \
 	$(SRC_DIR)/get_next_line/get_next_line.c \
 	$(SRC_DIR)/parsing/scene_parsing.c \
+	$(SRC_DIR)/parsing/map_parsing.c \
+	$(LIBFT_SRCS)
 	$(SRC_DIR)/init/init.c \
 	$(SRC_DIR)/init/mlx_init.c \
 	$(SRC_DIR)/render/render.c \
@@ -28,20 +53,6 @@ SRCS := \
 	$(SRC_DIR)/utils/error.c \
 	$(SRC_DIR)/utils/free.c \
 	$(SRC_DIR)/utils/utils.c \
-	$(SRC_DIR)/libft/ft_atoi.c \
-	$(SRC_DIR)/libft/ft_calloc.c \
-	$(SRC_DIR)/libft/ft_split.c \
-	$(SRC_DIR)/libft/ft_strchr.c \
-	$(SRC_DIR)/libft/ft_strdup.c \
-	$(SRC_DIR)/libft/ft_strjoin.c \
-	$(SRC_DIR)/libft/ft_strlen.c \
-	$(SRC_DIR)/libft/ft_substr.c \
-	$(SRC_DIR)/libft/ft_memcpy.c \
-	$(SRC_DIR)/libft/ft_memset.c \
-	$(SRC_DIR)/libft/ft_strncmp.c \
-	$(SRC_DIR)/libft/str_is_num.c \
-	$(SRC_DIR)/libft/ft_isdigit.c \
-	$(SRC_DIR)/libft/ft_isspace.c
 
 # Objets
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

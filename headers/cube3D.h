@@ -39,19 +39,16 @@ typedef struct s_player
 
 typedef struct s_scene
 {
-	char	*no_texture;
-	char	*so_texture;
-	char	*we_texture;
-	char	*ea_texture;
-	char	*floor_color;
-	char	*ceiling_color;
-	int		spawn_x;
-	int		spawn_y;
-	char	**map;
-	char	**map_tab;
-	int		map_height;
-	int		map_width;
-}				t_scene;
+    t_list  *map_struct;
+	char    **map_tab;
+    char *no_texture;
+    char *so_texture;
+    char *we_texture;
+    char *ea_texture;
+    char *floor_color;
+    char *ceiling_color;
+}	t_scene;
+
 
 typedef struct s_app
 {
@@ -84,6 +81,18 @@ typedef struct s_ray
 	double	perp_wall_dist;
 }				t_ray;
 
+//PARSING
+t_scene parse_file(char *file_name);
+void    free_scene_infos(t_scene *scene);
+int	    put_map_in_list(char *map_line, t_list **map);
+void	free_map(t_list *map);
+void	print_list(t_list *list);
+void	print_scene_infos(t_scene *scene);
+void	print_scene(t_scene *scene);
+void	free_scene(t_scene *scene);
+char	**put_list_in_tabs(t_list *map, int is_map);
+//
+
 void	render_scene(t_app *app);
 void	movement(t_app *app);
 int		key_press(int key, t_app *app);
@@ -93,8 +102,6 @@ void	init_mlx(t_app *app);
 void	load_textures(t_app *app);
 void	init_player(t_app *app);
 void	error_handler(char *msg);
-t_scene	parse_file(char *filename);
-void	free_scene(t_scene *scene);
 int		get_color(t_app *app, t_ray *ray, int y, int line_height);
 void	free_all_data(t_app *app);
 void	ft_putstr_fd(char *s, int fd);
