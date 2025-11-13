@@ -86,12 +86,6 @@ void	free_scene(t_scene *scene)
 	free_tab(scene->map_tab);
 }
 
-void	error_handler(char *error_message)
-{
-	printf("Error:\n%s", error_message);
-	exit(EXIT_FAILURE);
-}
-
 int is_empty(char *str)
 {
 	int i;

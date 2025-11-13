@@ -1,8 +1,10 @@
+
 #include "../headers/cube3D.h"
 
 //main swann
-/* int main(int argc, char **argv)
+int main(int argc, char **argv)
 {
+	t_scene scene;
     (void)argc;
     scene = parse_file(argv[1]);
 
@@ -10,7 +12,7 @@
     free_scene(&scene);
 
     return (0);
-} */
+}
 
 int	loop(t_app *app)
 {
@@ -44,10 +46,10 @@ void	parse_map_tab(t_scene *scene)
 	int	x;
 
 	scene->map_height = 0;
-	while (scene->map[scene->map_height])
+	while (scene->map_tab[scene->map_height])
 		scene->map_height++;
 
-	scene->map_width = get_map_width(scene->map);
+	scene->map_width = get_map_width(scene->map_tab);
 	scene->map_tab = malloc(sizeof(char *) * (scene->map_height + 1));
 	if (!scene->map_tab)
 		error_handler("Failed to allocate map_tab");
@@ -59,13 +61,13 @@ void	parse_map_tab(t_scene *scene)
 		if (!scene->map_tab[y])
 			error_handler("Failed to allocate map_tab[y]");
 		x = -1;
-		while (scene->map[y][++x])
-			scene->map_tab[y][x] = scene->map[y][x];
+		while (scene->map_tab[y][++x])
+			scene->map_tab[y][x] = scene->map_tab[y][x];
 	}
 	scene->map_tab[scene->map_height] = NULL;
 }
 
-int	main(int ac, char **av)
+/* int	main(int ac, char **av)
 {
 	t_app	app;
 
@@ -85,4 +87,4 @@ int	main(int ac, char **av)
 	mlx_loop_hook(app.mlx, loop, &app);
 	mlx_loop(app.mlx);
 	return (0);
-}
+} */

@@ -3,7 +3,7 @@
 
 void	error_handler(char *error_message)
 {
-	ft_putstr_fd(RED "cub3D: Error: ", 2);
+	ft_putstr_fd(RED "Error:\n", 2);
 	ft_putstr_fd(error_message, 2);
 	ft_putstr_fd("\n" RESET, 2);
 	exit(EXIT_FAILURE);
@@ -65,38 +65,6 @@ void	free_image(t_app *app)
 {
 	if (app->frame.img)
 		mlx_destroy_image(app->mlx, app->frame.img);
-}
-
-void	free_map(char **map)
-{
-	int	i;
-
-	if (!map)
-		return ;
-	i = 0;
-	while (map[i])
-	{
-		free(map[i]);
-		i++;
-	}
-	free(map);
-}
-
-void	free_scene(t_scene *scene)
-{
-	if (scene->no_texture)
-		free(scene->no_texture);
-	if (scene->so_texture)
-		free(scene->so_texture);
-	if (scene->we_texture)
-		free(scene->we_texture);
-	if (scene->ea_texture)
-		free(scene->ea_texture);
-	if (scene->floor_color)
-		free(scene->floor_color);
-	if (scene->ceiling_color)
-		free(scene->ceiling_color);
-	free_map(scene->map_tab);
 }
 
 void	free_all_data(t_app *app)
