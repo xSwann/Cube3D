@@ -34,7 +34,20 @@ typedef struct s_scene
 
 t_scene parse_file(char *file_name);
 
-void free_scene(t_scene *scene);
+void free_scene_infos(t_scene *scene);
+
+int	put_map_in_list(char *map_line, t_list **map);
+
+void	free_map(t_list *map);
+
+
+void	print_list(t_list *list);
+void	print_scene_infos(t_scene *scene);
+void	print_scene(t_scene *scene);
+void	free_scene(t_scene *scene);
+
+
+
 
 
 #endif

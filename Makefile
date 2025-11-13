@@ -45,8 +45,8 @@ LIBFT_SRCS   := \
 SRCS        := \
 	src/main.c \
 	src/get_next_line/get_next_line.c \
-	src/parsing/command_paring.c \
 	src/parsing/scene_parsing.c \
+	src/parsing/map_parsing.c \
 	$(LIBFT_SRCS)
 
 

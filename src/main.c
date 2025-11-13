@@ -6,6 +6,11 @@ int main(int argc, char **argv)
 
     (void)argc;
     scene = parse_file(argv[1]);
+
+
+    print_scene(&scene);
     free_scene(&scene);
+
+
     return (0);
 }
