@@ -27,26 +27,21 @@ typedef struct s_scene
     char *ea_texture;
     char *floor_color;
     char *ceiling_color;
-
 }	t_scene;
 
 /*===FUNCTIONS===*/
 
+//PARSING
 t_scene parse_file(char *file_name);
-
-void free_scene_infos(t_scene *scene);
-
-int	put_map_in_list(char *map_line, t_list **map);
-
+void    free_scene_infos(t_scene *scene);
+int	    put_map_in_list(char *map_line, t_list **map);
 void	free_map(t_list *map);
-
-
 void	print_list(t_list *list);
 void	print_scene_infos(t_scene *scene);
 void	print_scene(t_scene *scene);
 void	free_scene(t_scene *scene);
-
-
+char	**put_list_in_tabs(t_list *map, int is_map);
+//
 
 
 
