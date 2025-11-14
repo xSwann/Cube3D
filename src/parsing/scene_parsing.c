@@ -4,21 +4,21 @@
 void	print_scene(t_scene *scene)
 {	
 	print_scene_infos(scene);
-	print_list(scene->map_struct);
+	print_tab(scene->map_tab);
 }
 
-void	free_tab(char **tab)
+void	print_tab(char **tab)
 {
 	int i;
 
 	i = 0;
 	while (tab[i])
 	{
-		free(tab[i]);
+		printf("%s\n", tab[i]);
 		i++;
 	}
-	free(tab);
 }
+
 void	fill_tab(t_list *tmp_map, char **tab_map, int is_map, int i)
 {
 	int	line_len;
@@ -305,24 +305,14 @@ void	import_configuration_line(char *line, t_scene *scene)
 			if(scene->no_texture)
 				free(scene->no_texture);
 			texture = sanitize_texture_line(line + i + 1);
-			if (!texture)  // Si sanitize échoue (car il peut retourner NULL maintenant)
+			if (!texture)
 			{
 				free(line);
 				free_scene_infos(scene);
 				error_handler("Memory allocation failed");
 			}
 			if (!is_empty(texture))
-			{
-				if (have_good_extension(texture))
 					scene->no_texture = texture;
-				else
-				{
-					free(texture);
-					free(line);
-					free_scene_infos(scene);
-					error_handler("Textures should be .xpm files");
-				}
-			}
 		}
 		else if(line[i] == 'S')
 		{
@@ -336,17 +326,7 @@ void	import_configuration_line(char *line, t_scene *scene)
 				free(scene->so_texture);
 			texture = sanitize_texture_line(line + i + 1);
 			if (!is_empty(texture))
-			{
-				if (have_good_extension(texture))
 					scene->so_texture = texture;
-				else
-				{
-					free(texture);
-					free(line);
-					free_scene_infos(scene);
-					error_handler("Textures should be .xpm files");
-				}
-			}
 		}
 		else if(line[i] == 'W')
 		{
@@ -360,17 +340,7 @@ void	import_configuration_line(char *line, t_scene *scene)
 				free(scene->we_texture);
 			texture = sanitize_texture_line(line + i + 1);
 			if (!is_empty(texture))
-			{
-				if (have_good_extension(texture))
 					scene->we_texture = texture;
-				else
-				{
-					free(texture);
-					free(line);
-					free_scene_infos(scene);
-					error_handler("Textures should be .xpm files");
-				}
-			}
 		}
 		else if(line[i] == 'E')
 		{
@@ -384,17 +354,7 @@ void	import_configuration_line(char *line, t_scene *scene)
 				free(scene->ea_texture);
 			texture = sanitize_texture_line(line + i + 1);
 			if (!is_empty(texture))
-			{
-				if (have_good_extension(texture))
 				scene->ea_texture = texture;
-				else
-				{
-					free(texture);
-					free(line);
-					free_scene_infos(scene);
-					error_handler("Textures should be .xpm files");
-				}
-			}
 		}
 		return ;
 	}
@@ -453,51 +413,39 @@ void	read_scene_lines(int fd, t_scene *scene)
 			error_handler("You should enter a map");
 	free(scene_line);
 }
-void init_scene(t_scene *scene)
-{
-	scene->ceiling_color = NULL;
-	scene->floor_color = NULL;
-	scene->ea_texture = NULL;
-	scene->so_texture = NULL;
-	scene->no_texture = NULL;
-	scene->we_texture = NULL;
-	scene->map_struct = NULL;
-}
 
-void free_scene_infos(t_scene *scene)
+void validate_texture(char *path, t_scene *scene)
 {
-	free(scene->ceiling_color);
-	free(scene->floor_color);
-	free(scene->ea_texture);
-	free(scene->so_texture);
-	free(scene->no_texture);
-	free(scene->we_texture);
-}
+    int len;
+    int fd;
 
-t_scene	read_scene(char *scene_name)
-{
-	int		fd;
-	t_scene	scene;
-	int i;
-
-	i = 0;
-	fd = open(scene_name, O_RDONLY);
-	if (fd < 0)
+    len = ft_strlen(path);
+    if (len < 4 || ft_strncmp(path + len - 4, ".xpm", 4) != 0)
 	{
-		printf("File does not exit");
-		exit(EXIT_FAILURE);
+		free_scene(scene);
+        error_handler("Texture must end with .xpm");
 	}
-	init_scene(&scene);
-	read_scene_lines(fd, &scene);
-	scene.map_tab = put_list_in_tabs(scene.map_struct, 1);
-	return (scene);
+
+    fd = open(path, O_RDONLY);
+    if (fd < 0)
+	{
+		free_scene(scene);
+        error_handler("Texture file cannot be opened");
+	}
+    close(fd);
 }
 
-t_scene parse_file(char *file_name)
+void	validate_textures(t_scene *scene)
 {
-    t_scene scene;
-
-	scene = read_scene(file_name);
-    return (scene);
+	validate_texture(scene->ea_texture, scene);
+	validate_texture(scene->no_texture, scene);
+	validate_texture(scene->so_texture, scene);
+	validate_texture(scene->we_texture, scene);
 }
+
+
+
+
+
+
 
