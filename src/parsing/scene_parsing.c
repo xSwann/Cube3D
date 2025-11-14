@@ -360,7 +360,7 @@ void	import_configuration_line(char *line, t_scene *scene)
 	}
 	free(line);
 	free_scene_infos(scene);
-	error_handler("Need configurations lines before the map\n");
+	error_handler("Need configurations lines before the map");
 }
 
 int is_configuration_full(t_scene *scene)
@@ -387,7 +387,7 @@ void	read_scene_lines(int fd, t_scene *scene)
 			remove_endl(&scene_line);
 			if (!scene_line)
 				return ;
-			if (scene_line && scene_line[0] != '\n')
+			if (scene_line && !is_empty(scene_line))
 				import_configuration_line(scene_line, scene);
 		}
 		free(scene_line);

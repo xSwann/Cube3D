@@ -109,7 +109,7 @@ t_list	*create_node(char *line);
 int		put_map_in_list(char *map_line, t_list **map);
 void	validate_textures(t_scene *scene);
 void	read_scene_lines(int fd, t_scene *scene);
-void    validate_map(t_scene *scene);
+void    validate_map(char **map, int width, int height);
 void	get_width_and_height(char **raw_map, t_scene *scene);
 char	**uniform_map(char **map, int width, int height);
 

@@ -54,38 +54,57 @@ char **uniform_map(char **map, int width, int height)
     }
     return (square_map);
 }
-
-void    validate_map(t_scene *scene)
+//Verifie que la map soit entourree de murs
+//Pour l'instant n'accepte pas les trous (espaces vides) a l'interieur des murs
+void    validate_map(char **map, int width, int height)
 {
 
     int i;
+    int j;
     
     i = 0;
-    (void)scene;
-    /* while(square_map[i])
+    while (map[i])
     {
-        printf("%s", square_map[i]);
-        i++;
-    } */
-    /* int i;
-    int void_start;
-    int void_end;
-
-    i = 0;
-    if (!is_wall_line(scene->map_tab[0]))
-        error_handler("Map must be bordered by walls");
-    while(scene->map_tab[i])
-    {
-
+        j = 0;
+        while(j < width)
+        {
+            if (j < width && map[i][j] == '0')
+            {
+                if (j > 0 && map[i][j - 1] != '1')
+                    error_handler("1: Map must be bordered by walls");
+                while(j < width && map[i][j] != ' ')
+                    j++;
+                if (j > 0 && map[i][j - 1] != '1')
+                    error_handler("2: Map must be bordered by walls");
+            }
+            j++;
+        }
         i++;
     }
-    if (!is_wall_line(scene->map_tab[0]))
-        error_handler("Map must be bordered by walls");
-        */
+    i = 0;
+    j = 0;
+    while(j < width)
+    {
+        i = 0;
+        while (map[i])
+        {
+            if (j < width && map[i][j] == '0')
+            {
+                if (i > 0 && map[i - 1][j] != '1')
+                    error_handler("3: Map must be bordered by walls");
+                while(map[i] && map[i][j] != ' ')
+                    i++;
+                if (i > 0 && map[i - 1][j] != '1')
+                    error_handler("4: Map must be bordered by walls");
+            }
+            if (i < height)
+                i++;
+        }
+        j++;
+    }
 }
 
-//recuperer la plus grande ligne et mettre des void pour faire une map carre
-//checker sur une ligne si les case en dessous void sont des 1
+//checker sur une ligne si les case en dessous void sont des 1 ou des void
 //is_wall_line doit verifier si la ligne est compose de 1 ou de void
 //liste chainee qui contient lemplacement des void et checker la prochaine ligne si ces endroit sont complete soit par 1 soit par void
 //si la len est plus grande que lanmcienne ligne verifier que de la len de lenciennt ligne jusquq la fin il y ai des 1

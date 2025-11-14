@@ -38,6 +38,6 @@ t_scene parse_file(char *file_name)
 
 	scene = create_scene(file_name);
     validate_textures(&scene);
-    validate_map(&scene);
+    validate_map(scene.map_tab, scene.map_width, scene.map_height);
     return (scene);
 }
