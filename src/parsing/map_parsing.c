@@ -61,7 +61,7 @@ void    validate_map(char **map, int width, int height)
 
     int i;
     int j;
-    
+
     i = 0;
     while (map[i])
     {
@@ -108,3 +108,39 @@ void    validate_map(char **map, int width, int height)
 //is_wall_line doit verifier si la ligne est compose de 1 ou de void
 //liste chainee qui contient lemplacement des void et checker la prochaine ligne si ces endroit sont complete soit par 1 soit par void
 //si la len est plus grande que lanmcienne ligne verifier que de la len de lenciennt ligne jusquq la fin il y ai des 1
+//
+
+static int	is_spawn_char(char c)
+{
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+		return (1);
+	return (0);
+}
+
+void	find_spawn(t_scene *scene)
+{
+	int	y;
+	int	x;
+	int	found;
+
+	found = 0;
+	y = 0;
+	while (y < scene->map_height)
+	{
+		x = 0;
+		while (x < scene->map_width)
+		{
+			if (is_spawn_char(scene->map_tab[y][x]))
+			{
+				scene->spawn_x = x;
+				scene->spawn_y = y;
+				scene->spawn_orientation = scene->map_tab[y][x];
+				found++;
+			}
+			x++;
+		}
+		y++;
+	}
+	if (found != 1)
+		error_handler("Map must contain exactly one player spawn");
+}

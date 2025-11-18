@@ -60,15 +60,14 @@ void	init_player(t_app *app)
 
 int	key_press(int key, t_app *app)
 {
-	if (key < 512)
+	if (key >= 0 && key < 65536)
 		app->keys[key] = 1;
 	return (0);
 }
 
 int	key_release(int key, t_app *app)
 {
-	if (key < 512)
+	if (key >= 0 && key < 65536)
 		app->keys[key] = 0;
 	return (0);
 }
-

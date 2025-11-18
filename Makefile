@@ -54,7 +54,6 @@ SRCS := \
 	$(SRC_DIR)/render/render.c \
 	$(SRC_DIR)/render/get_color.c \
 	$(SRC_DIR)/events/move.c \
-	$(SRC_DIR)/events/movement.c \
 	$(SRC_DIR)/raycast/raycast.c \
 	$(SRC_DIR)/raycast/ray_utils.c \
 	$(SRC_DIR)/utils/error.c \
@@ -63,7 +62,8 @@ SRCS := \
 	$(LIBFT_SRCS)
 
 ### ───────────── OBJECTS ───────────── ###
-OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+OBJS := $(SRCS:%.c=$(OBJ_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
 ### ───────────── COLORS ───────────── ###
@@ -87,7 +87,7 @@ $(MLX_LIB):
 	@$(MAKE) -C $(MLX_DIR) > /dev/null
 	@echo "$(GREEN)MiniLibX OK$(RESET)"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	@echo "$(BLUE)Compiling:$(RESET) $<"
 	$(CC) $(CFLAGS) $(CPPFLAGS) -MMD -c $< -o $@

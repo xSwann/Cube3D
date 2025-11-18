@@ -6,13 +6,12 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:42:47 by slatrech          #+#    #+#             */
-/*   Updated: 2025/11/05 10:58:44 by slatrech         ###   ########.fr       */
+/*   Updated: 2025/11/17 06:51:10 by elanteno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
-
-static size_t	ft_countwords(const char *str, int c)
+static size_t ft_countwords(const char *str, int c)
 {
 	size_t	i;
 	size_t	j;
@@ -21,26 +20,26 @@ static size_t	ft_countwords(const char *str, int c)
 	j = 0;
 	while (str[i])
 	{
-		if ((str[i - 1] == c || i == 0) && str[i] != c)
+		if ((i == 0 || str[i - 1] == c) && str[i] != c)
 			j++;
 		i++;
 	}
 	return (j);
 }
 
-static size_t	ft_wordlen(const char *str, int c, size_t k)
+static size_t ft_wordlen(const char *str, int c, size_t k)
 {
 	size_t	j;
 
 	j = 0;
 	while (str[k] && str[k] == c)
 		k++;
-	while (str[k + j] != c && str[k + j])
+	while (str[k + j] && str[k + j] != c)
 		j++;
 	return (j);
 }
 
-static void	ft_free_table(char **table)
+static void ft_free_table(char **table)
 {
 	size_t	i;
 
@@ -53,55 +52,44 @@ static void	ft_free_table(char **table)
 	free(table);
 }
 
-static char	**ft_build_table(char const *s, char c, char **table, size_t i)
+static char **ft_build_table(const char *s, char c, char **table, size_t count)
 {
-	size_t	j;
-	size_t	k;
-	size_t	len;
+	size_t j;
+	size_t k;
+	size_t len;
 
 	j = 0;
 	k = 0;
-	while (j < i)
+	while (j < count)
 	{
 		len = ft_wordlen(s, c, k);
-		table[j] = (char *)ft_calloc((len + 1), sizeof(char));
-		if (!(table[j]))
+		table[j] = ft_calloc(len + 1, sizeof(char));
+		if (!table[j])
 		{
 			ft_free_table(table);
 			return (NULL);
 		}
 		while (s[k] && s[k] == c)
 			k++;
-		if (s[k] && s[k] != c && ft_memcpy(table[j], (s + k), (len)))
-			k += len;
-		table[j][len + 1] = '\0';
+		ft_memcpy(table[j], s + k, len);
+		table[j][len] = '\0';
+		k += len;
 		j++;
 	}
 	table[j] = NULL;
 	return (table);
 }
 
-char	**ft_split(char const *s, char c)
+char **ft_split(const char *s, char c)
 {
 	char	**table;
-	size_t	i;
+	size_t	count;
 
-	i = ft_countwords(s, c);
-	table = ft_calloc((i + 1), sizeof(char *));
-	if (!(table))
+	if (!s)
 		return (NULL);
-	return (ft_build_table(s, c, table, i));
+	count = ft_countwords(s, c);
+	table = ft_calloc(count + 1, sizeof(char *));
+	if (!table)
+		return (NULL);
+	return ft_build_table(s, c, table, count);
 }
-/*
-int	main(void)
-{
-	const char	*string = "eaebhhgee fe  fe fwf e f f fer er  fw ee w e  er ";
-	int			srchdc = 'e';
-	char	**table = ft_split(string, srchdc);
-	int	i = 0;
-	while (table[i])
-	{
-		printf("%s\n", table[i]);
-		i++;
-	}
-}*/	

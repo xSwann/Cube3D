@@ -11,17 +11,17 @@ void	error_handler(char *error_message)
 
 void	super_exit(t_app *app, int code)
 {
-	if (!app)
-		exit(code);
-	if (app->win && app->mlx)
-		mlx_destroy_window(app->mlx, app->win);
-	if (app->mlx)
+	if (app)
 	{
-		mlx_destroy_display(app->mlx);
-		mlx_loop_end(app->mlx);
-		free(app->mlx);
+		free_all_data(app);
+		if (app->win && app->mlx)
+			mlx_destroy_window(app->mlx, app->win);
+		if (app->mlx)
+		{
+			mlx_destroy_display(app->mlx);
+			free(app->mlx);
+		}
 	}
-	free_all_data(app);
 	exit(code);
 }
 
@@ -69,15 +69,9 @@ void	free_image(t_app *app)
 
 void	free_all_data(t_app *app)
 {
+	if (!app)
+		return ;
 	free_textures(app);
 	free_image(app);
 	free_scene(&app->scene);
-	if (app->win)
-		mlx_destroy_window(app->mlx, app->win);
-	if (app->mlx)
-	{
-		mlx_destroy_display(app->mlx);
-		free(app->mlx);
-	}
 }
-

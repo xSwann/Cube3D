@@ -1,17 +1,32 @@
 #include "../../headers/cube3D.h"
 
+static double	get_delta(double dir)
+{
+	double	inv;
+
+	if (dir == 0.0)
+		return (1e30);
+	inv = 1.0 / dir;
+	if (inv < 0.0)
+		return (-inv);
+	return (inv);
+}
+
 /* init_ray(t_ray *ray, t_app *app, int x) : initialise les structures valeurs nécessaires. */
 /* avance rayon par rayon pour détecter les intersections. */
-void init_ray(t_ray *ray, t_app *app, int x)
+void	init_ray(t_ray *ray, t_app *app, int x)
 {
-    ray->camera_x = 2 * x / (double)WIN_WIDTH - 1;
-    ray->dir_x = app->player.dir_x + app->player.plane_x * ray->camera_x;
-    ray->dir_y = app->player.dir_y + app->player.plane_y * ray->camera_x;
-    ray->map_x = (int)app->player.pos_x;
-    ray->map_y = (int)app->player.pos_y;
-    ray->delta_dist_x = fabs(1 / ray->dir_x);
-    ray->delta_dist_y = fabs(1 / ray->dir_y);
-    ray->hit = 0;
+	double	camera_x;
+
+	camera_x = 2.0 * x / (double)WIN_WIDTH - 1.0;
+	ray->camera_x = camera_x;
+	ray->dir_x = app->player.dir_x + app->player.plane_x * camera_x;
+	ray->dir_y = app->player.dir_y + app->player.plane_y * camera_x;
+	ray->map_x = (int)app->player.pos_x;
+	ray->map_y = (int)app->player.pos_y;
+	ray->delta_dist_x = get_delta(ray->dir_x);
+	ray->delta_dist_y = get_delta(ray->dir_y);
+	ray->hit = 0;
 }
 
 /* init_dda(t_ray *ray, t_app *app) : initialise les structures et valeurs nécessaires. */
@@ -75,49 +90,34 @@ void my_mlx_pixel_put(t_img *img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void draw_column(t_app *app, int x, t_ray *ray)
+void	draw_column(t_app *app, int x, t_ray *ray)
 {
+	int	line_height;
+	int	draw_start;
+	int	draw_end;
+	int	y;
+	int	color;
+
 	if (ray->perp_wall_dist <= 0)
-		return;
-
-	int line_height = (int)(WIN_HEIGHT / ray->perp_wall_dist);
-	int draw_start = -line_height / 2 + WIN_HEIGHT / 2;
-	int draw_end = line_height / 2 + WIN_HEIGHT / 2;
-
+		return ;
+	line_height = (int)(WIN_HEIGHT / ray->perp_wall_dist);
+	draw_start = -line_height / 2 + WIN_HEIGHT / 2;
 	if (draw_start < 0)
 		draw_start = 0;
+	draw_end = line_height / 2 + WIN_HEIGHT / 2;
 	if (draw_end >= WIN_HEIGHT)
 		draw_end = WIN_HEIGHT - 1;
-
-	// Texture selection
-	int tex_num = ray->side; // 0: NS, 1: EW
-	if (tex_num < 0 || tex_num >= 4)
-		return;
-
-	t_img *tex = &app->textures[tex_num];
-	if (!tex->img || !tex->addr)
-		return;
-
-	double wall_x;
-	if (ray->side == 0)
-		wall_x = app->player.pos_y + ray->perp_wall_dist * ray->dir_y;
-	else
-		wall_x = app->player.pos_x + ray->perp_wall_dist * ray->dir_x;
-	wall_x -= floor(wall_x);
-
-	int tex_x = (int)(wall_x * (double)(tex->width));
-	if ((ray->side == 0 && ray->dir_x > 0) || (ray->side == 1 && ray->dir_y < 0))
-		tex_x = tex->width - tex_x - 1;
-
-	double step = 1.0 * tex->height / line_height;
-	double tex_pos = (draw_start - WIN_HEIGHT / 2 + line_height / 2) * step;
-
-	for (int y = draw_start; y < draw_end; y++)
+	y = 0;
+	while (y < WIN_HEIGHT)
 	{
-		int tex_y = (int)tex_pos & (tex->height - 1);
-		tex_pos += step;
-		int color = tex->addr[tex->width * tex_y + tex_x];
+		if (y < draw_start)
+			color = app->ceiling_color;
+		else if (y > draw_end)
+			color = app->floor_color;
+		else
+			color = get_color(app, ray, y, line_height);
 		my_mlx_pixel_put(&app->frame, x, y, color);
+		y++;
 	}
 }
 

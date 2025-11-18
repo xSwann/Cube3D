@@ -19,8 +19,6 @@ void	init_texture_img(t_app *app, t_img *image, char *path)
 		return;
 	image->img = mlx_xpm_file_to_image(app->mlx, path, &image->width, &image->height);
 	if (!image->img)
-	return;
-	if (!image->img)
 		error_handler("Texture loading failed");
 	image->addr = (int *)mlx_get_data_addr(
 		image->img, &image->bpp, &image->line, &image->endian);
