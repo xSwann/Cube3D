@@ -137,5 +137,10 @@ void	free_all_data(t_app *app);
 void	ft_putstr_fd(char *s, int fd);
 void	init_texture_img(t_app *app, t_img *image, char *path);
 int		is_valid_path(const char *path);
+void	init_img(t_app *app, t_img *image, int width, int height);
+int		quit_game(t_app *app);
+void	find_spawn(t_scene *scene);
+int		parse_rgb(char *str);
+char    *clean_color_string(char *s);
 
 #endif
