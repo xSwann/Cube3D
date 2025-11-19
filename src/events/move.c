@@ -1,5 +1,12 @@
 #include "../../headers/cube3D.h"
 
+/*
+ * is_wall : détermine si la case aux coordonnées (x, y) contient un mur ou si
+ * elle est en dehors des limites de la carte. Renvoie 1 si la cellule n’est
+ * pas franchissable (mur ou bord de carte), sinon 0.
+ * 	yi = (int)y;  // Convertit la position flottante en indice de ligne.
+ * 	xi = (int)x;  // Convertit la position flottante en indice de colonne.
+ */
 static int	is_wall(t_scene *scene, double y, double x)
 {
 	int	xi;
@@ -14,6 +21,12 @@ static int	is_wall(t_scene *scene, double y, double x)
 	return (scene->map_tab[yi][xi] == '1');
 }
 
+/*
+ * move_forward : avance le joueur dans la direction où il regarde.  Calcule
+ * les nouvelles coordonnées (new_x, new_y) en ajoutant le vecteur direction
+ * multiplié par la vitesse.  On vérifie séparément les collisions sur y et x
+ * pour permettre le glissement le long des murs.
+ */
 static void	move_forward(t_app *app, double speed)
 {
 	double	new_y;
@@ -27,6 +40,11 @@ static void	move_forward(t_app *app, double speed)
 		app->player.pos_x = new_x;
 }
 
+/*
+ * l’inverse du vecteur direction.
+ * Procède de la même manière que move_forward mais en soustrayant
+ * la direction.
+ */
 static void	move_backward(t_app *app, double speed)
 {
 	double	new_y;
@@ -40,6 +58,11 @@ static void	move_backward(t_app *app, double speed)
 		app->player.pos_x = new_x;
 }
 
+/*
+ * strafe_left : déplace le joueur perpendiculairement à sa direction, vers
+ * la gauche.  Le vecteur perpendiculaire est obtenu en permutant dir_x/dir_y
+ * et en inversant un signe.  Cette opération permet de faire un "strafe".
+ */
 static void	strafe_left(t_app *app, double speed)
 {
 	double	perp_x;
@@ -57,6 +80,11 @@ static void	strafe_left(t_app *app, double speed)
 		app->player.pos_x = new_x;
 }
 
+/*
+ * strafe_right : déplace le joueur perpendiculairement vers la droite.
+ * Le vecteur perpendiculaire change simplement de signe par rapport à
+ * strafe_left.
+ */
 static void	strafe_right(t_app *app, double speed)
 {
 	double	perp_x;
@@ -74,6 +102,12 @@ static void	strafe_right(t_app *app, double speed)
 		app->player.pos_x = new_x;
 }
 
+/*
+ * rotate_player : fait pivoter le vecteur direction et le plan caméra
+ * d’un angle donné (en radians).  On sauvegarde d’abord l’ancienne valeur
+ * puis on applique les formules de rotation 2D.  Cela permet de tourner
+ * la vue sans changer la position du joueur.
+ */
 static void	rotate_player(t_app *app, double angle)
 {
 	double	old_dir_x;
@@ -91,6 +125,12 @@ static void	rotate_player(t_app *app, double angle)
 		* cos(angle);
 }
 
+/*
+ * movement : fonction appelée à chaque frame pour mettre à jour la position
+ * et l’orientation du joueur selon les touches pressées.  Elle définit la
+ * vitesse de déplacement (speed) et de rotation (rot_speed), puis teste
+ * l’état des touches dans le tableau app->keys pour déclencher les actions.
+ */
 void	movement(t_app *app)
 {
 	double	speed;

@@ -1,8 +1,36 @@
 #include "../../headers/cube3D.h"
 
-/* get_color(t_app *app, t_ray *ray, int y, int line_height) : met à jour le rendu de la frame courante. */
-/* avance rayon par rayon pour détecter les intersections → échantillonne la texture au bon offset. */
-/* met à jour le tampon d'image. */
+/*
+ *  * get_color : renvoie la couleur du pixel situé à la position (x, y) dans
+ *  la colonneen cours de rendu. La fonction sélectionne la bonne texture
+ *  selon la face du mur
+ * touchée, calcule la coordonnée horizontale dans cette texture (tex_x),
+ * puis la coordonnée verticale (tex_y) en fonction de la hauteur du mur affiché
+
+	// Déterminer la position de l’impact du rayon sur le mur.
+	// Si le mur touché est vertical (side == 0), l’impact dépend de la
+	// coordonnée y du joueur.
+	// Sinon, il dépend de la coordonnée x. On multiplie par la
+	// distance perpendiculaire pour
+	// retrouver le point exact d’intersection.
+
+	// Choisir la texture en fonction de la face du mur et du sens du rayon :
+	// - face verticale et rayon allant vers l’est => texture nord
+	// - face verticale et rayon allant vers l’ouest => texture sud
+	// - face horizontale et rayon allant vers le sud => texture ouest
+	// - sinon => texture est
+
+	// Convertir wall_x en une coordonnée horizontale de texture :
+	// Pour certaines orientations (rayon allant vers la droite ou vers le haut)
+	// il faut inverser l’axe x pour éviter que la texture ne soit affichée à
+	// l’envers.
+
+	// La coordonnée y dans la texture est obtenue en prenant la partie
+	// entière de tex_pos.
+	// L’opérateur & (bitwise AND) avec (tex->height - 1) d’alternative rapide
+	// à un modulo.
+	// Enfin, on renvoie la couleur du pixel (tex_x, tex_y) dans la texture.
+*/
 int	get_color(t_app *app, t_ray *ray, int y, int line_height)
 {
 	t_img	*tex;
@@ -39,4 +67,3 @@ int	get_color(t_app *app, t_ray *ray, int y, int line_height)
 	tex_y = (int)tex_pos & (tex->height - 1);
 	return (tex->addr[tex_y * tex->width + tex_x]);
 }
-

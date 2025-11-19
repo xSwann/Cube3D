@@ -9,11 +9,13 @@ void	ft_putstr_fd(char *s, int fd)
 	(void)ret;
 }
 
-int is_valid_path(const char *path)
+int	is_valid_path(const char *path)
 {
-	int fd = open(path, O_RDONLY);
+	int	fd;
+
+	fd = open(path, O_RDONLY);
 	if (fd < 0)
-		return 0;
+		return (0);
 	close(fd);
-	return 1;
+	return (1);
 }

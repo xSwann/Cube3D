@@ -6,16 +6,15 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 12:51:15 by elanteno          #+#    #+#             */
-/*   Updated: 2025/11/14 14:13:16 by slatrech         ###   ########.fr       */
+/*   Updated: 2025/11/19 12:09:19 by elanteno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/cube3D.h"
 
-
 void	free_tab(char **tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tab[i])
@@ -42,7 +41,7 @@ void	free_map(t_list *map)
 	}
 }
 
-void free_scene_infos(t_scene *scene)
+void	free_scene_infos(t_scene *scene)
 {
 	free(scene->ceiling_color);
 	free(scene->floor_color);
