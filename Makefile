@@ -48,6 +48,7 @@ SRCS := \
 	$(SRC_DIR)/parsing/read_and_parse.c \
 	$(SRC_DIR)/parsing/scene_parsing.c \
 	$(SRC_DIR)/parsing/map_parsing.c \
+	$(SRC_DIR)/parsing/flood_fill.c \
 	$(SRC_DIR)/parsing/utils.c \
 	$(SRC_DIR)/init/init.c \
 	$(SRC_DIR)/init/mlx_init.c \

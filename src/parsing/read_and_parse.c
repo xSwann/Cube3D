@@ -10,6 +10,7 @@ void init_scene(t_scene *scene)
 	scene->no_texture = NULL;
 	scene->we_texture = NULL;
 	scene->map_struct = NULL;
+	scene->map_tab = NULL;
 }
 
 t_scene	create_scene(char *scene_name)
@@ -23,10 +24,12 @@ t_scene	create_scene(char *scene_name)
 		error_handler("File does not exist");
 	init_scene(&scene);
 	read_scene_lines(fd, &scene);
-	raw_map= put_list_in_tabs(scene.map_struct, 1);
+	raw_map = put_list_in_tabs(scene.map_struct, 1);
     get_width_and_height(raw_map, &scene);
     scene.map_tab = uniform_map(raw_map, scene.map_width, scene.map_height);
-    free_tab(raw_map);
+	free_tab(raw_map);
+	find_spawn(&scene);
+	close(fd);
 	return (scene);
 }
 
@@ -93,8 +96,7 @@ t_scene parse_file(char *file_name)
     t_scene scene;
 
 	scene = create_scene(file_name);
-	find_spawn(&scene);
+	check_border(&scene);
     validate_textures(&scene);
-    validate_map(scene.map_tab, scene.map_width, scene.map_height);
     return (scene);
 }

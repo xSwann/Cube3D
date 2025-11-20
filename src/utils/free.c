@@ -6,12 +6,25 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 12:51:15 by elanteno          #+#    #+#             */
-/*   Updated: 2025/11/14 14:13:16 by slatrech         ###   ########.fr       */
+/*   Updated: 2025/11/20 15:24:10 by slatrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/cube3D.h"
 
+
+void	free_int_tab(int **tab, int height)
+{
+	int i;
+
+	i = 0;
+	while(i < height)
+    {
+        free(tab[i]);
+        i++;
+    }
+    free(tab);
+}
 
 void	free_tab(char **tab)
 {
@@ -40,6 +53,12 @@ void	free_map(t_list *map)
 		free(current);
 		current = next;
 	}
+}
+
+void	free_scene_and_exit(t_scene *scene, char *msg)
+{
+	free_scene(scene);
+	error_handler(msg);
 }
 
 void free_scene_infos(t_scene *scene)

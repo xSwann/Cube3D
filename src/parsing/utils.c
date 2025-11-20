@@ -77,7 +77,7 @@ int	is_line_valid(char *line)
 	return (1);
 }
 
-int	put_map_in_list(char *map_line, t_list **map)
+int	put_map_in_list(char *map_line, t_scene *scene)
 {
 	t_list	*node;
 
@@ -86,11 +86,12 @@ int	put_map_in_list(char *map_line, t_list **map)
 		if (is_line_valid(map_line))
 		{
 			node = create_node(map_line);
-			add_back(map, node);
+			add_back(&scene->map_struct, node);
 		}
 		else
 		{
-			free_map(*map);
+			free_scene(scene);
+			free(map_line);
 			error_handler("Non-valid map");
 		}
 	}
