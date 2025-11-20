@@ -60,18 +60,3 @@ void	free_textures(t_app *app)
 		i++;
 	}
 }
-
-void	free_image(t_app *app)
-{
-	if (app->frame.img)
-		mlx_destroy_image(app->mlx, app->frame.img);
-}
-
-void	free_all_data(t_app *app)
-{
-	if (!app)
-		return ;
-	free_textures(app);
-	free_image(app);
-	free_scene(&app->scene);
-}

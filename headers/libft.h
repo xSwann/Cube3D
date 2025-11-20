@@ -6,7 +6,7 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:40:29 by slatrech          #+#    #+#             */
-/*   Updated: 2025/11/07 10:29:01 by slatrech         ###   ########.fr       */
+/*   Updated: 2025/11/20 10:52:57 by elanteno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		str_is_num(char *str);
 int		ft_isalpha(int a);
 int		ft_isalnum(int a);
 int		ft_isdigit(int a);
-int     ft_isspace(char c);
+int		ft_isspace(char c);
 //int		ft_isalnum(int c);
 //int		ft_isalpha(int c);
 //int		ft_isascii(int c);

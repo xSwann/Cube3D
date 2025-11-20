@@ -6,12 +6,13 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:42:47 by slatrech          #+#    #+#             */
-/*   Updated: 2025/11/17 06:51:10 by elanteno         ###   ########.fr       */
+/*   Updated: 2025/11/19 12:07:46 by elanteno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
-static size_t ft_countwords(const char *str, int c)
+
+static size_t	ft_countwords(const char *str, int c)
 {
 	size_t	i;
 	size_t	j;
@@ -27,7 +28,7 @@ static size_t ft_countwords(const char *str, int c)
 	return (j);
 }
 
-static size_t ft_wordlen(const char *str, int c, size_t k)
+static size_t	ft_wordlen(const char *str, int c, size_t k)
 {
 	size_t	j;
 
@@ -39,7 +40,7 @@ static size_t ft_wordlen(const char *str, int c, size_t k)
 	return (j);
 }
 
-static void ft_free_table(char **table)
+static void	ft_free_table(char **table)
 {
 	size_t	i;
 
@@ -52,11 +53,11 @@ static void ft_free_table(char **table)
 	free(table);
 }
 
-static char **ft_build_table(const char *s, char c, char **table, size_t count)
+static char	**ft_build_table(const char *s, char c, char **table, size_t count)
 {
-	size_t j;
-	size_t k;
-	size_t len;
+	size_t	j;
+	size_t	k;
+	size_t	len;
 
 	j = 0;
 	k = 0;
@@ -80,7 +81,7 @@ static char **ft_build_table(const char *s, char c, char **table, size_t count)
 	return (table);
 }
 
-char **ft_split(const char *s, char c)
+char	**ft_split(const char *s, char c)
 {
 	char	**table;
 	size_t	count;
@@ -91,5 +92,5 @@ char **ft_split(const char *s, char c)
 	table = ft_calloc(count + 1, sizeof(char *));
 	if (!table)
 		return (NULL);
-	return ft_build_table(s, c, table, count);
+	return (ft_build_table(s, c, table, count));
 }
