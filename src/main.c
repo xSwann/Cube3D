@@ -13,6 +13,7 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 		error_handler("Usage: ./cub3D map.cub");
+	is_map_name_valid(av[1]);
 	ft_memset(&app, 0, sizeof(t_app));
 	app.scene = parse_file(av[1]);
 	app.floor_color = parse_rgb(app.scene.floor_color);

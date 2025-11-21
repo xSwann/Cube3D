@@ -38,7 +38,8 @@ LIBFT_SRCS := \
 	$(LIBFT_DIR)/ft_isalpha.c \
 	$(LIBFT_DIR)/ft_isalnum.c \
 	$(LIBFT_DIR)/ft_isdigit.c \
-	$(LIBFT_DIR)/ft_strslen.c
+	$(LIBFT_DIR)/ft_strslen.c \
+	$(LIBFT_DIR)/put_list_in_tab.c 
 
 ### ───────────── PROJECT SOURCES ───────────── ###
 
@@ -46,9 +47,17 @@ SRCS := \
 	$(SRC_DIR)/main.c \
 	$(SRC_DIR)/get_next_line/get_next_line.c \
 	$(SRC_DIR)/parsing/read_and_parse.c \
+	$(SRC_DIR)/parsing/read_scene.c \
 	$(SRC_DIR)/parsing/scene_parsing.c \
 	$(SRC_DIR)/parsing/map_parsing.c \
-	$(SRC_DIR)/parsing/utils.c \
+	$(SRC_DIR)/parsing/flood_fill.c \
+	$(SRC_DIR)/parsing/parse_texture.c \
+	$(SRC_DIR)/parsing/utils/utils.c \
+	$(SRC_DIR)/parsing/utils/utils2.c \
+	$(SRC_DIR)/parsing/utils/check_utils.c \
+	$(SRC_DIR)/parsing/utils/check_utils2.c \
+	$(SRC_DIR)/parsing/parse_colors.c \
+	$(SRC_DIR)/parsing/utils/print.c \
 	$(SRC_DIR)/init/init.c \
 	$(SRC_DIR)/init/init2.c \
 	$(SRC_DIR)/init/mlx_init.c \

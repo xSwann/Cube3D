@@ -16,8 +16,15 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+typedef struct s_list
+{
+	char 			*line;
+	struct s_list	*next;
+} t_list;
+
 //int		ft_atoi(const char *s1);
 //void	ft_bzero(void *s, size_t n);
+char	**put_list_in_tabs(t_list *map, int is_map);
 void	*ft_calloc(size_t n, size_t size);
 char	*ft_itoa(int nbr);
 int		ft_atoi(const char *str);
