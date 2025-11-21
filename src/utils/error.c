@@ -3,9 +3,8 @@
 
 void	error_handler(char *error_message)
 {
-	ft_putstr_fd(RED "Error:\n", 2);
+	ft_putstr_fd("Error\n", 2);
 	ft_putstr_fd(error_message, 2);
-	ft_putstr_fd("\n" RESET, 2);
 	exit(EXIT_FAILURE);
 }
 
@@ -75,3 +74,4 @@ void	free_all_data(t_app *app)
 	free_image(app);
 	free_scene(&app->scene);
 }
+

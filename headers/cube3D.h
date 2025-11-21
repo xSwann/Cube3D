@@ -37,11 +37,6 @@ typedef struct s_player
 	double	plane_y;
 }				t_player;
 
-typedef struct s_list
-{
-	char 			*line;
-	struct s_list	*next;
-} t_list;
 
 typedef struct s_scene
 {
@@ -92,27 +87,57 @@ typedef struct s_ray
 	double	perp_wall_dist;
 }				t_ray;
 
+//flood fill
+typedef struct s_fill
+{
+    char    **map;
+    int     **visited;
+    int      width;
+    int      height;
+}   t_fill;
+
+
 //PARSING
+int		**alloc_visited(t_scene *scene);
+void	color_line_error(t_scene *scene, char *line, char *to_free, char *msg);
+void	check_rgb_error(t_scene *scene, char *line, char *to_free, char *nb);
+char	*find_full_number(char *line, int *i, int *count);
+char	*sanitize_color_line(char *line);
+void	import_colors(char *line, int i, t_scene *scene);
+void	check_rgb_error(t_scene *scene, char *line, char *to_free, char *nb);
+void	import_configuration_line(char *line, t_scene *scene);
+void	init_fill_struct(t_fill *f, t_scene *scene, int **visited);
+char	*sanitize_texture_line(char *line);
+void	border_flood_calls(t_scene *scene, t_fill *f);
+void    copy_chars(int *i, int *j, char **copy_tab, char **tab);
+void	validate_textures(t_scene *scene);
+void	skip_spaces(int *i, char *line);
+int		is_line_valid(char *line);
+int 	is_empty(char *str);
+void 	remove_endl(char **str);
+int 	is_configuration_full(t_scene *scene);
+int		is_spawn_tile(char c);
 t_scene parse_file(char *file_name);
+void    flood(t_scene *scene, t_fill *f, int x, int y);
 void    free_scene_infos(t_scene *scene);
-int	    put_map_in_list(char *map_line, t_list **map);
 void	print_list(t_list *list);
 void	print_tab(char **tab);
 void	print_scene_infos(t_scene *scene);
+void	is_map_name_valid(char *map_name);
 void	print_scene(t_scene *scene);
+int 	is_open_tile(char tile);
 void	free_scene(t_scene *scene);
 char	**put_list_in_tabs(t_list *map, int is_map);
 void	print_list(t_list *list);
 int		list_size(t_list *list);
 void	add_back(t_list **list, t_list *new_node);
+void	free_scene_and_exit(t_scene *scene, char *msg);
 t_list	*create_node(char *line);
-int		put_map_in_list(char *map_line, t_list **map);
-void	validate_textures(t_scene *scene);
+int		put_map_in_list(char *map_line, t_scene *scene);
 void	read_scene_lines(int fd, t_scene *scene);
-void    validate_map(char **map, int width, int height);
+void    check_border(t_scene *scene);
 void	get_width_and_height(char **raw_map, t_scene *scene);
 char	**uniform_map(char **map, int width, int height);
-
 //
 
 
@@ -120,6 +145,7 @@ char	**uniform_map(char **map, int width, int height);
 void	free_map(t_list *map);
 void 	free_scene_infos(t_scene *scene);
 void	free_tab(char **tab);
+void	free_int_tab(int **tab, int height);
 
 
 

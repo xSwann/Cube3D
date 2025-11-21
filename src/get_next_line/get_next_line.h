@@ -6,7 +6,7 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 13:50:21 by slatrech          #+#    #+#             */
-/*   Updated: 2025/11/06 13:43:17 by slatrech         ###   ########.fr       */
+/*   Updated: 2025/11/20 17:20:02 by slatrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <string.h>
 # include "../headers/libft.h"
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1000
+#  define BUFFER_SIZE 10000
 # endif
 
 char	*get_next_line(int fd);
