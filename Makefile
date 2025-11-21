@@ -47,6 +47,7 @@ SRCS := \
 	$(SRC_DIR)/main.c \
 	$(SRC_DIR)/get_next_line/get_next_line.c \
 	$(SRC_DIR)/parsing/read_and_parse.c \
+	$(SRC_DIR)/parsing/read_scene.c \
 	$(SRC_DIR)/parsing/scene_parsing.c \
 	$(SRC_DIR)/parsing/map_parsing.c \
 	$(SRC_DIR)/parsing/flood_fill.c \

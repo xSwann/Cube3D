@@ -56,3 +56,62 @@ int	parse_rgb(char *str)
 	free_tab(split);
 	return (color);
 }
+
+//Retourne une ligne sanitize, si elle respecte le format imposee
+char	*import_color_line( t_scene *scene, char *line, char *to_free)
+{
+	int		i;
+	int		count;
+	int		comma_count;
+	char	*full_number;
+
+	i = 0;
+	count = 0;
+	comma_count = 0;
+	while (line[i])
+	{
+		full_number = find_full_number(line, &i, &count);
+		if (!full_number)
+			color_line_error(scene, line, to_free, "Memory allocation failed");
+		if ((line[i] == ',' && comma_count == 2) || count == 0
+			|| (count > 3) || (ft_atoi(full_number) > 255))
+			check_rgb_error(scene, line, to_free, full_number);
+		free(full_number);
+		if (i < ft_strlen(line))
+			i++;
+		comma_count++;
+	}
+	if (comma_count < 3)
+		color_line_error(scene, line, to_free,
+			"Colors must be R,G,B inside 0/255 separated by ','");
+	return (sanitize_color_line(line));
+}
+
+void	import_colors(char *line, int i, t_scene *scene)
+{
+	char	*line_value;
+	char	current_key;
+
+	current_key = line[i];
+	if (line[i] == 'F' || line[i] == 'C')
+	{
+		skip_spaces(&i, line);
+		line_value = ft_substr(line, i + 1, ft_strlen(line) - (i));
+		if (!line_value)
+		{
+			free(line);
+			free_scene_and_exit(scene, "Memory allocation failed");
+		}
+		if (current_key == 'F')
+		{
+			free(scene->floor_color);
+			scene->floor_color = import_color_line(scene, line_value, line);
+		}
+		else if (current_key == 'C')
+		{
+			free(scene->ceiling_color);
+			scene->ceiling_color = import_color_line(scene, line_value, line);
+		}
+		free(line_value);
+	}
+}
