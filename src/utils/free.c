@@ -35,7 +35,7 @@ void	free_int_tab(int **tab, int height)
 
 void	free_tab(char **tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tab[i])
@@ -76,4 +76,19 @@ void free_scene_infos(t_scene *scene)
 	free(scene->so_texture);
 	free(scene->no_texture);
 	free(scene->we_texture);
+}
+
+void	free_image(t_app *app)
+{
+	if (app->frame.img)
+		mlx_destroy_image(app->mlx, app->frame.img);
+}
+
+void	free_all_data(t_app *app)
+{
+	if (!app)
+		return ;
+	free_textures(app);
+	free_image(app);
+	free_scene(&app->scene);
 }

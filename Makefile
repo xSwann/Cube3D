@@ -59,12 +59,13 @@ SRCS := \
 	$(SRC_DIR)/parsing/parse_colors.c \
 	$(SRC_DIR)/parsing/utils/print.c \
 	$(SRC_DIR)/init/init.c \
+	$(SRC_DIR)/init/init2.c \
 	$(SRC_DIR)/init/mlx_init.c \
 	$(SRC_DIR)/render/render.c \
+	$(SRC_DIR)/render/render2.c \
 	$(SRC_DIR)/render/get_color.c \
 	$(SRC_DIR)/events/move.c \
-	$(SRC_DIR)/raycast/raycast.c \
-	$(SRC_DIR)/raycast/ray_utils.c \
+	$(SRC_DIR)/events/move2.c \
 	$(SRC_DIR)/utils/error.c \
 	$(SRC_DIR)/utils/free.c \
 	$(SRC_DIR)/utils/utils.c \
@@ -89,8 +90,12 @@ all: $(MLX_LIB) $(NAME)
 $(NAME): $(OBJS)
 	@echo "$(BLUE)Linking:$(RESET) $@"
 	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS)
-	@echo "$(GREEN)Build OK !$(RESET)"
-
+	@echo "$(GREEN)Build OK !"
+	@echo ' ____ ____ ____ ____ ____ ____ ____ '
+	@echo '||C |||U |||B |||E |||  |||3 |||D ||'
+	@echo '||__|||__|||__|||__|||__|||__|||__||'
+	@echo '|/__\|/__\|/__\|/__\|/__\|/__\|/__\|'
+	@echo '                                    '
 $(MLX_LIB):
 	@echo "$(YELLOW)Building MiniLibX...$(RESET)"
 	@$(MAKE) -C $(MLX_DIR) > /dev/null

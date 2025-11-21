@@ -1,6 +1,13 @@
 #include "../../headers/cube3D.h"
 
-static int	is_wall(t_scene *scene, double y, double x)
+/*
+ * is_wall : détermine si la case aux coordonnées (x, y) contient un mur ou si
+ * elle est en dehors des limites de la carte. Renvoie 1 si la cellule n’est
+ * pas franchissable (mur ou bord de carte), sinon 0.
+ * 	yi = (int)y;  // Convertit la position flottante en indice de ligne.
+ * 	xi = (int)x;  // Convertit la position flottante en indice de colonne.
+ */
+int	is_wall(t_scene *scene, double y, double x)
 {
 	int	xi;
 	int	yi;
@@ -14,90 +21,19 @@ static int	is_wall(t_scene *scene, double y, double x)
 	return (scene->map_tab[yi][xi] == '1');
 }
 
-static void	move_forward(t_app *app, double speed)
-{
-	double	new_y;
-	double	new_x;
-
-	new_y = app->player.pos_y + app->player.dir_y * speed;
-	new_x = app->player.pos_x + app->player.dir_x * speed;
-	if (!is_wall(&app->scene, new_y, app->player.pos_x))
-		app->player.pos_y = new_y;
-	if (!is_wall(&app->scene, app->player.pos_y, new_x))
-		app->player.pos_x = new_x;
-}
-
-static void	move_backward(t_app *app, double speed)
-{
-	double	new_y;
-	double	new_x;
-
-	new_y = app->player.pos_y - app->player.dir_y * speed;
-	new_x = app->player.pos_x - app->player.dir_x * speed;
-	if (!is_wall(&app->scene, new_y, app->player.pos_x))
-		app->player.pos_y = new_y;
-	if (!is_wall(&app->scene, app->player.pos_y, new_x))
-		app->player.pos_x = new_x;
-}
-
-static void	strafe_left(t_app *app, double speed)
-{
-	double	perp_x;
-	double	perp_y;
-	double	new_y;
-	double	new_x;
-
-	perp_x = app->player.dir_y;
-	perp_y = -app->player.dir_x;
-	new_y = app->player.pos_y + perp_y * speed;
-	new_x = app->player.pos_x + perp_x * speed;
-	if (!is_wall(&app->scene, new_y, app->player.pos_x))
-		app->player.pos_y = new_y;
-	if (!is_wall(&app->scene, app->player.pos_y, new_x))
-		app->player.pos_x = new_x;
-}
-
-static void	strafe_right(t_app *app, double speed)
-{
-	double	perp_x;
-	double	perp_y;
-	double	new_y;
-	double	new_x;
-
-	perp_x = -app->player.dir_y;
-	perp_y = app->player.dir_x;
-	new_y = app->player.pos_y + perp_y * speed;
-	new_x = app->player.pos_x + perp_x * speed;
-	if (!is_wall(&app->scene, new_y, app->player.pos_x))
-		app->player.pos_y = new_y;
-	if (!is_wall(&app->scene, app->player.pos_y, new_x))
-		app->player.pos_x = new_x;
-}
-
-static void	rotate_player(t_app *app, double angle)
-{
-	double	old_dir_x;
-	double	old_plane_x;
-
-	old_dir_x = app->player.dir_x;
-	app->player.dir_x = app->player.dir_x * cos(angle) - app->player.dir_y
-		* sin(angle);
-	app->player.dir_y = old_dir_x * sin(angle) + app->player.dir_y
-		* cos(angle);
-	old_plane_x = app->player.plane_x;
-	app->player.plane_x = app->player.plane_x
-		* cos(angle) - app->player.plane_y * sin(angle);
-	app->player.plane_y = old_plane_x * sin(angle) + app->player.plane_y
-		* cos(angle);
-}
-
+/*
+ * movement : fonction appelée à chaque frame pour mettre à jour la position
+ * et l’orientation du joueur selon les touches pressées.  Elle définit la
+ * vitesse de déplacement (speed) et de rotation (rot_speed), puis teste
+ * l’état des touches dans le tableau app->keys pour déclencher les actions.
+ */
 void	movement(t_app *app)
 {
 	double	speed;
 	double	rot_speed;
 
-	speed = 0.1;
-	rot_speed = 0.05;
+	speed = 0.02;
+	rot_speed = 0.01;
 	if (app->keys[119] || app->keys[65362])
 		move_forward(app, speed);
 	if (app->keys[115] || app->keys[65364])
