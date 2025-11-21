@@ -1,33 +1,55 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   free2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/21 16:16:32 by slatrech          #+#    #+#             */
-/*   Updated: 2025/11/21 16:16:33 by slatrech         ###   ########.fr       */
+/*   Created: 2025/11/21 16:16:37 by slatrech          #+#    #+#             */
+/*   Updated: 2025/11/21 16:16:38 by slatrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/cube3D.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	free_int_tab(int **tab, int height)
 {
-	ssize_t	ret;
+	int	i;
 
-	if (s)
-		ret = write(fd, s, ft_strlen(s));
-	(void)ret;
+	i = 0;
+	while (i < height)
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
 }
 
-int	is_valid_path(const char *path)
+void	free_tab(char **tab)
 {
-	int	fd;
+	int	i;
 
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		return (0);
-	close(fd);
-	return (1);
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
+
+void	free_map(t_list *map)
+{
+	t_list	*current;
+	t_list	*next;
+
+	current = map;
+	while (current)
+	{
+		next = current->next;
+		if (current->line)
+			free(current->line);
+		free(current);
+		current = next;
+	}
 }

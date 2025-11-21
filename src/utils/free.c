@@ -6,7 +6,7 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 12:51:15 by elanteno          #+#    #+#             */
-/*   Updated: 2025/11/20 16:55:14 by slatrech         ###   ########.fr       */
+/*   Updated: 2025/11/21 16:13:31 by slatrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,10 @@
 
 void	free_scene(t_scene *scene)
 {
-    free_scene_infos(scene);
-    free_map(scene->map_struct);
+	free_scene_infos(scene);
+	free_map(scene->map_struct);
 	if (scene->map_tab)
 		free_tab(scene->map_tab);
-}
-
-void	free_int_tab(int **tab, int height)
-{
-	int i;
-
-	i = 0;
-	while(i < height)
-    {
-        free(tab[i]);
-        i++;
-    }
-    free(tab);
-}
-
-void	free_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-}
-
-void	free_map(t_list *map)
-{
-	t_list	*current;
-	t_list	*next;
-
-	current = map;
-	while (current)
-	{
-		next = current->next;
-		if (current->line)
-			free(current->line);
-		free(current);
-		current = next;
-	}
 }
 
 void	free_scene_and_exit(t_scene *scene, char *msg)
@@ -68,7 +26,7 @@ void	free_scene_and_exit(t_scene *scene, char *msg)
 	error_handler(msg);
 }
 
-void free_scene_infos(t_scene *scene)
+void	free_scene_infos(t_scene *scene)
 {
 	free(scene->ceiling_color);
 	free(scene->floor_color);
