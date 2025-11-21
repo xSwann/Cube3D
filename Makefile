@@ -68,6 +68,7 @@ SRCS := \
 	$(SRC_DIR)/events/move2.c \
 	$(SRC_DIR)/utils/error.c \
 	$(SRC_DIR)/utils/free.c \
+	$(SRC_DIR)/utils/free2.c \
 	$(SRC_DIR)/utils/utils.c \
 	$(LIBFT_SRCS)
 

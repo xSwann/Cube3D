@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/21 16:16:27 by slatrech          #+#    #+#             */
+/*   Updated: 2025/11/21 16:16:28 by slatrech         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../headers/cube3D.h"
 #include "../../headers/libft.h"
 
@@ -59,19 +71,3 @@ void	free_textures(t_app *app)
 		i++;
 	}
 }
-
-void	free_image(t_app *app)
-{
-	if (app->frame.img)
-		mlx_destroy_image(app->mlx, app->frame.img);
-}
-
-void	free_all_data(t_app *app)
-{
-	if (!app)
-		return ;
-	free_textures(app);
-	free_image(app);
-	free_scene(&app->scene);
-}
-

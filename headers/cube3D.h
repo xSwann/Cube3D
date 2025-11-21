@@ -63,12 +63,6 @@ typedef struct s_player
 	 * linked list allows building the map incrementally without
 	 * knowing its size beforehand.
 	 */
-typedef struct s_list
-{
-	char			*line;
-	struct s_list	*next;
-}			t_list;
-
 /*
 	 * Holds all of the data extracted from the .cub configuration
 	 * file.  `map_struct` is a linked list of the raw map lines read
@@ -203,7 +197,6 @@ typedef struct s_tex_calc
  */
 t_scene	parse_file(char *file_name);
 void	free_scene_infos(t_scene *scene);
-int		put_map_in_list(char *map_line, t_list **map);
 //flood fill
 typedef struct s_fill
 {
@@ -223,6 +216,7 @@ char	*sanitize_color_line(char *line);
 void	import_colors(char *line, int i, t_scene *scene);
 void	check_rgb_error(t_scene *scene, char *line, char *to_free, char *nb);
 void	import_configuration_line(char *line, t_scene *scene);
+void	free_int_tab(int **tab, int height);
 void	init_fill_struct(t_fill *f, t_scene *scene, int **visited);
 char	*sanitize_texture_line(char *line);
 void	border_flood_calls(t_scene *scene, t_fill *f);
