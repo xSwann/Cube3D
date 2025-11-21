@@ -37,11 +37,6 @@ typedef struct s_player
 	double	plane_y;
 }				t_player;
 
-typedef struct s_list
-{
-	char 			*line;
-	struct s_list	*next;
-} t_list;
 
 typedef struct s_scene
 {
@@ -103,6 +98,16 @@ typedef struct s_fill
 
 
 //PARSING
+int		**alloc_visited(t_scene *scene);
+void	init_fill_struct(t_fill *f, t_scene *scene, int **visited);
+void	border_flood_calls(t_scene *scene, t_fill *f);
+void    copy_chars(int *i, int *j, char **copy_tab, char **tab);
+void	validate_textures(t_scene *scene);
+int	is_line_valid(char *line);
+int is_empty(char *str);
+void remove_endl(char **str);
+int is_configuration_full(t_scene *scene);
+int	is_spawn_tile(char c);
 t_scene parse_file(char *file_name);
 void    flood(t_scene *scene, t_fill *f, int x, int y);
 void    free_scene_infos(t_scene *scene);
@@ -120,7 +125,6 @@ void	add_back(t_list **list, t_list *new_node);
 void	free_scene_and_exit(t_scene *scene, char *msg);
 t_list	*create_node(char *line);
 int	put_map_in_list(char *map_line, t_scene *scene);
-void	validate_textures(t_scene *scene);
 void	read_scene_lines(int fd, t_scene *scene);
 void    check_border(t_scene *scene);
 void	get_width_and_height(char **raw_map, t_scene *scene);

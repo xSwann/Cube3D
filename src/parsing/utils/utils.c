@@ -1,18 +1,4 @@
-#include "../../headers/cube3D.h"
-
-void	print_list(t_list *list)
-{
-	t_list	*tmp;
-
-	tmp = list;
-	printf("%s\n", tmp -> line);
-	while (tmp -> next)
-	{
-		tmp = tmp -> next;
-		printf("%s\n", tmp -> line);
-	}
-}
-
+#include "../../../headers/cube3D.h"
 
 int	list_size(t_list *list)
 {
@@ -61,22 +47,6 @@ t_list	*create_node(char *line)
 	return (new_node);
 }
 
-int	is_line_valid(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] != ' ' && line[i] != '0' && line[i] != '1'
-			&& line[i] != 'N' && line[i] != 'S'
-			&& line[i] != 'E' && line[i] != 'W' && line[i] != '\n')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 int	put_map_in_list(char *map_line, t_scene *scene)
 {
 	t_list	*node;
@@ -96,4 +66,25 @@ int	put_map_in_list(char *map_line, t_scene *scene)
 		}
 	}
 	return (0);
+}
+
+void	remove_endl(char **str)
+{
+	int		i;
+	char	*str_without_endl;
+
+	if (!str || !*str)
+		return ;
+	i = 0;
+	if ((*str)[i] == '\n')
+	{
+		free(*str);
+		*str = ft_strdup("");
+		return ;
+	}
+	while ((*str)[i] && (*str)[i] != '\n')
+		i++;
+	str_without_endl = ft_substr(*str, 0, i);
+	free(*str);
+	*str = str_without_endl;
 }
