@@ -6,7 +6,7 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 17:24:34 by slatrech          #+#    #+#             */
-/*   Updated: 2025/11/21 17:27:32 by slatrech         ###   ########.fr       */
+/*   Updated: 2025/11/24 09:38:42 by elanteno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 /* ************************************************************************** */
 
 # include "../src/get_next_line/get_next_line.h"
-# include	"../headers/libft.h"
+# include "../headers/libft.h"
 # include <mlx.h>
 # include <math.h>
 # include <unistd.h>
