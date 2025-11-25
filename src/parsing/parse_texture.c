@@ -6,7 +6,7 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 16:15:16 by slatrech          #+#    #+#             */
-/*   Updated: 2025/11/21 16:15:17 by slatrech         ###   ########.fr       */
+/*   Updated: 2025/11/24 09:46:43 by elanteno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	handle_textures(char *line, int i, t_scene *scene, char key)
 	char	**target;
 	char	next;
 
+	target = NULL;
 	wich_key(key, &next, &target, scene);
 	if (line[++i] != next)
 	{
@@ -86,7 +87,6 @@ void	handle_textures(char *line, int i, t_scene *scene, char key)
 void	import_configuration_line(char *line, t_scene *scene)
 {
 	int		i;
-	char	current_key;
 
 	i = 0;
 	while (line[i] && (ft_isspace(line[i])))
@@ -94,7 +94,6 @@ void	import_configuration_line(char *line, t_scene *scene)
 	if (line[i] == 'N' || line[i] == 'S' || line[i] == 'W'
 		|| line[i] == 'E' || line[i] == 'F' || line[i] == 'C')
 	{
-		current_key = line[i];
 		import_colors(line, i, scene);
 		if (line[i] == 'N')
 			handle_textures(line, i, scene, 'N');

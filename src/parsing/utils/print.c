@@ -6,14 +6,14 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 16:15:53 by slatrech          #+#    #+#             */
-/*   Updated: 2025/11/21 16:15:54 by slatrech         ###   ########.fr       */
+/*   Updated: 2025/11/24 09:37:47 by elanteno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/cube3D.h"
 
 void	print_scene(t_scene *scene)
-{	
+{
 	print_scene_infos(scene);
 	print_tab(scene->map_tab);
 }
