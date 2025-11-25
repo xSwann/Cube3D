@@ -6,7 +6,7 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 16:15:35 by slatrech          #+#    #+#             */
-/*   Updated: 2025/11/21 16:15:36 by slatrech         ###   ########.fr       */
+/*   Updated: 2025/11/25 13:40:59 by elanteno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ int	get_color(t_app *app, t_ray *ray, int y, int line_height)
 		tc.wall_x = app->player.pos_y + ray->perp_wall_dist * ray->dir_y;
 	tc.wall_x -= floor(tc.wall_x);
 	if (ray->side == 0 && ray->dir_x > 0)
-		tc.tex = &app->textures[0];
-	else if (ray->side == 0 && ray->dir_x < 0)
-		tc.tex = &app->textures[1];
-	else if (ray->side == 1 && ray->dir_y > 0)
-		tc.tex = &app->textures[2];
-	else
 		tc.tex = &app->textures[3];
+	else if (ray->side == 0 && ray->dir_x < 0)
+		tc.tex = &app->textures[2];
+	else if (ray->side == 1 && ray->dir_y > 0)
+		tc.tex = &app->textures[1];
+	else
+		tc.tex = &app->textures[0];
 	tc.tex_x = (int)(tc.wall_x * (double)tc.tex->width);
 	if ((ray->side == 0 && ray->dir_x > 0)
 		|| (ray->side == 1 && ray->dir_y < 0))
