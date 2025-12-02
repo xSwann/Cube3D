@@ -6,7 +6,7 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 16:15:59 by slatrech          #+#    #+#             */
-/*   Updated: 2025/11/21 16:16:00 by slatrech         ###   ########.fr       */
+/*   Updated: 2025/12/02 10:53:34 by slatrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,18 @@ char	*find_full_number(char *line, int *i, int *count)
 		(*i)++;
 	full_number = ft_substr(line, start, end - start);
 	return (full_number);
+}
+
+void	str_is_rgb_line(char *nb, t_scene *scene, char *line, char *to_free)
+{
+	int	i;
+
+	i = 0;
+	while (nb[i])
+	{
+		if (!ft_isdigit(nb[i]) && nb[i] != ','
+			&& !ft_isspace(nb[i]))
+			color_line_error(scene, line, to_free);
+		i++;
+	}
 }

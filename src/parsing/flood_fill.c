@@ -6,7 +6,7 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 16:15:02 by slatrech          #+#    #+#             */
-/*   Updated: 2025/11/21 16:15:03 by slatrech         ###   ########.fr       */
+/*   Updated: 2025/12/02 10:50:04 by slatrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	flood(t_scene *scene, t_fill *f, int x, int y)
 	if (tile == '1')
 		return ;
 	if (is_open_tile(tile))
+	{
+		free_int_tab(f->visited, f->height);
 		free_scene_and_exit(scene, "Map is not closed by walls");
+	}
 	f->visited[y][x] = 1;
 	flood(scene, f, x + 1, y);
 	flood(scene, f, x - 1, y);

@@ -6,7 +6,7 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 16:15:12 by slatrech          #+#    #+#             */
-/*   Updated: 2025/11/21 16:15:13 by slatrech         ###   ########.fr       */
+/*   Updated: 2025/12/02 10:24:28 by slatrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,12 @@ char	*import_color_line( t_scene *scene, char *line, char *to_free)
 	i = 0;
 	count = 0;
 	comma_count = 0;
+	str_is_rgb_line(line, scene, line, to_free);
 	while (line[i])
 	{
 		full_number = find_full_number(line, &i, &count);
 		if (!full_number)
-			color_line_error(scene, line, to_free, "Memory allocation failed");
+			color_line_error(scene, line, to_free);
 		if ((line[i] == ',' && comma_count == 2) || count == 0
 			|| (count > 3) || (ft_atoi(full_number) > 255))
 			check_rgb_error(scene, line, to_free, full_number);
@@ -94,8 +95,7 @@ char	*import_color_line( t_scene *scene, char *line, char *to_free)
 		comma_count++;
 	}
 	if (comma_count < 3)
-		color_line_error(scene, line, to_free,
-			"Colors must be R,G,B inside 0/255 separated by ','");
+		color_line_error(scene, line, to_free);
 	return (sanitize_color_line(line));
 }
 
