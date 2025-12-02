@@ -6,7 +6,7 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 16:15:28 by slatrech          #+#    #+#             */
-/*   Updated: 2025/11/21 16:15:29 by slatrech         ###   ########.fr       */
+/*   Updated: 2025/12/02 10:19:35 by slatrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,16 @@ char	*sanitize_texture_line(char *line)
 	return (str);
 }
 
-void	color_line_error(t_scene *scene, char *line, char *to_free, char *msg)
+void	color_line_error(t_scene *scene, char *line, char *to_free)
 {
 	free_scene_infos(scene);
 	free(line);
 	free(to_free);
-	error_handler(msg);
+	error_handler("Colors must be R,G,B inside 0/255 separated by ','");
 }
 
 void	check_rgb_error(t_scene *scene, char *line, char *to_free, char *nb)
 {
 	free(nb);
-	color_line_error(scene, line, to_free,
-		"Colors must be R,G,B inside 0/255 separated by ','");
+	color_line_error(scene, line, to_free);
 }

@@ -6,7 +6,7 @@
 /*   By: slatrech <slatrech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 17:24:34 by slatrech          #+#    #+#             */
-/*   Updated: 2025/11/24 09:38:42 by elanteno         ###   ########.fr       */
+/*   Updated: 2025/12/02 10:52:39 by slatrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,8 @@ void	import_colors(char *line, int i, t_scene *scene);
 char	*import_color_line(t_scene *scene, char *line, char *line_to_free);
 char	*sanitize_color_line(char *line);
 char	*find_full_number(char *line, int *i, int *count);
-void	color_line_error(t_scene *scene, char *line, char *to_free, char *msg);
+void	color_line_error(t_scene *scene, char *line, char *to_free);
+void	str_is_rgb_line(char *nb, t_scene *scene, char *line, char *to_free);
 int		parse_rgb(char *str);
 char	*clean_color_string(char *s);
 
