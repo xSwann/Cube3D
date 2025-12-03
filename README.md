@@ -1,113 +1,168 @@
-## 🧭 Organisation Git
+# Cube3D (42)
 
-### 🔹 Branche principale  
-**main** → contient toujours une version stable et fonctionnelle du projet.
-
-### 🔹 Branches de développement  
-Chaque nouvelle fonctionnalité se fait sur une **branche dédiée**, puis est mergée dans **main** une fois terminée et testée.
-
-**Exemples :**
-- swann/parser  
-- name/raycasting  
-- swann/textures  
-- name/minimap  
+> A basic 3D raycasting engine written in C using **MiniLibX (Linux or macOS)**.  
+> MiniLibX **is not included in this repository**, so you must install it on your system before compiling.
 
 ---
 
-## 🧠 Commandes Git utiles
+## ✨ Features
 
-### 🆕 Créer une nouvelle branche  
-Avant de commencer une nouvelle fonctionnalité :
+- Raycasting engine (vertical projection per screen column)  
+- Directional wall textures (NO, SO, WE, EA)  
+- Floor & ceiling colors (F/C)  
+- Player movement & rotation  
+- Collision detection  
+- Map parsing & validation  
+- `.cub` configuration format (textures, colors, map layout)  
+
+---
+
+## 🔧 Build
+
+### 1) Install MiniLibX
+
+#### **Linux (X11)**
 
 ```bash
-git checkout main             # se placer sur la branche principale
-git pull origin main          # récupérer la dernière version
-git checkout -b swann/parser
+sudo apt update
+sudo apt install -y build-essential libx11-dev libxext-dev
+git clone https://github.com/42Paris/minilibx-linux.git
+cd minilibx-linux
+make
 ```
 
-### 💾 Sauvegarder et envoyer son travail  
-```bash
-git add .
-git commit -m "feat: start parser"
-git push origin swann/parser
+Then in your Makefile, link with:
+```
+-Lminilibx-linux -lmlx -lXext -lX11 -lm
 ```
 
-### 🔁 Mettre à jour sa branche avec main  
-Avant de merge, pour éviter les conflits :
-
-```bash
-git checkout main
-git pull origin main
-git checkout feature/parser
-git merge main
-```
-
----
-
-## 🚀 Fusionner dans main
-
-Quand une feature est terminée :
-
-1. Aller sur **GitHub**  
-2. Créer une **Pull Request** → de `name/...` vers `main`  
-3. Le binôme vérifie et valide ✅  
-4. Merge sur GitHub  
-5. Ensuite, chacun met à jour sa branche **main** localement :
+#### **macOS**
 
 ```bash
-git checkout main
-git pull origin main
+brew install minilibx
 ```
 
----
+Or manually:
 
-## 💬 Règles de commit
-
-**Format recommandé :**
-```
-<type>: <message clair>
-```
-
-**Types courants :**
-- feat: nouvelle fonctionnalité  
-- fix: correction  
-- refactor: réécriture interne  
-- style: norminette / indentation  
-- docs: README, commentaires  
-
-**Exemples :**
 ```bash
-git commit -m "feat: implement raycasting loop"
-git commit -m "fix: leak in texture loading"
-git commit -m "style: fix norminette warnings"
+git clone https://github.com/42Paris/minilibx-mac.git
+cd minilibx-mac
+make
+```
+
+Then link with:
+```
+-framework OpenGL -framework AppKit -lmlx
 ```
 
 ---
 
-## 🧹 Bonnes pratiques
+### 2) Compile the project
 
-- Toujours **pull avant de coder** :
-  ```bash
-  git checkout main
-  git pull origin main
-  ```
-- Ne jamais coder directement sur **main**  
-- Une **branche = une fonctionnalité**  
-- Commit fréquents et explicites  
-- Toujours compiler sans warnings (`-Wall -Wextra -Werror`)  
+```bash
+make
+```
+
+Cleaning:
+
+```bash
+make clean
+make fclean
+make re
+```
+
+Executable: **`cub3D`**
 
 ---
 
-## 🧩 Schéma du flux Git
+## ▶️ Usage
+
+```bash
+./cub3D maps/good/<mapname>.cub
+```
+
+### Controls
+
+| Key | Action |
+|-----|--------|
+| W / ↑ | Move forward |
+| S / ↓ | Move backward |
+| A | Strafe left |
+| D | Strafe right |
+| ← / → | Rotate view |
+| ESC | Quit |
+
+---
+
+## 🗺️ Map Format
+
+A valid `.cub` file contains:
 
 ```
-(main)───┐
-         ├───► feature/parser ──┐
-         │                      ├───► merge → main
-         ├───► feature/raycast ─┘
-         │
-         ▼
-       (main stable)
+NO path/to/north.xpm
+SO path/to/south.xpm
+WE path/to/west.xpm
+EA path/to/east.xpm
+
+F R,G,B
+C R,G,B
+
+<map>
+```
+
+### Map rules
+
+- Must be rectangular  
+- Must be surrounded by walls (`1`)  
+- Allowed characters: `0`, `1`, `N`, `S`, `E`, `W`  
+- Exactly one player start position  
+- Valid RGB colors (0–255)  
+
+---
+
+## 🗂️ Project Structure
+
+```
+Cube3D/
+├─ Makefile
+├─ README.md
+├─ headers/
+│   ├─ cube3D.h
+│   └─ libft.h
+├─ maps/
+│   ├─ bad/
+│   ├─ good/
+│   └─ perso.cub
+├─ textures/
+│   ├─ direction/
+│   ├─ east.xpm
+│   ├─ north.xpm
+│   ├─ south.xpm
+│   └─ west.xpm
+└─ src/
+    ├─ events/
+    ├─ get_next_line/
+    ├─ init/
+    ├─ libft/
+    ├─ parsing/
+    ├─ render/
+    ├─ utils/
+    └─ main.c
 ```
 
 ---
+
+## 🧠 Implementation Notes
+
+- Raycasting per vertical stripe  
+- Wall hit detection and texture mapping  
+- Fisheye correction  
+- Collision detection  
+- Init → parse → load textures → render loop  
+- Input handled through MiniLibX hooks  
+
+---
+
+## 👤 Author
+
+- Swann — @xSwann
